@@ -1,0 +1,28 @@
+#Config YML Defaults
+
+Game:
+  TeamAmount: 2
+  Teams:
+  - Red
+  - Blue
+  Spectate: true
+Maps:
+  Example:
+    Name: Example
+    NumTeams: 2
+    WorldFileName: example
+    Saving: false
+    Spawns:
+      '1':
+        x: 1
+        y: 1
+        z: 1
+        yaw: 1
+        pitch: 1
+      '2':
+        x: 1
+        y: 1
+        z: 1
+        yaw: 1
+        pitch: 1
+Test: true
