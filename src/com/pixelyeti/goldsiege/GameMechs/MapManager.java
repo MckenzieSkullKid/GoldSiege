@@ -22,7 +22,7 @@ public class MapManager {
         int mapsSize = 0;
 
         for (String s : configSection.getKeys(false)) {
-            mapsSize += 1;
+            mapsSize++;
         }
 
         maps = new Map[mapsSize];
