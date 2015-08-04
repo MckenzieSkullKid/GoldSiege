@@ -25,12 +25,10 @@ public class Teams {
     public static void creatingTeams(Integer teamAmount, String[] teamNames, boolean spectate, Game g) {
         board = g.board;
 
-        obj = board.registerNewObjective("Gold Blocks", "dummy");
+        g.obj = board.registerNewObjective("Gold Blocks", "dummy");
 
         for(Team t : teamsAr) {
-            for(OfflinePlayer p : t.getPlayers()) {
-                t.removePlayer(p);
-            }
+            t.getPlayers().forEach(t::removePlayer);
         }
         teamsAr.clear();
 
@@ -110,19 +108,17 @@ public class Teams {
         return max;
     }
 
-    public static void incrementScore(Team t) {
-        Score score = obj.getScore(t.getPrefix() + t.getName() + ":");
-        score.setScore(score.getScore() + 1);
-        if (Game.checkGameWon()) {
-            Game.endGame();
+    public static void incrementScore(Team t, String gameName) {
+        Game ga = null;
+        for(Game g : GameManager.getGames()) {
+            if (g.gameName.equalsIgnoreCase(gameName)) {
+                ga = g;
+            }
         }
-    }
-
-    public static void applyNameTag() {
-        for (UUID id : Game.players) {
-            Player p = Bukkit.getPlayer(id);
-
-
+        Score score = ga.obj.getScore(t.getPrefix() + t.getName() + ":");
+        score.setScore(score.getScore() + 1);
+        if (GameManager.checkGameWon(gameName)) {
+            GameManager.endGame(gameName);
         }
     }
 

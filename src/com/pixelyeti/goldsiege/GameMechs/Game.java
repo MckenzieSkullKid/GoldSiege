@@ -1,5 +1,6 @@
 package com.pixelyeti.goldsiege.GameMechs;
 
+import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
@@ -18,6 +19,8 @@ public class Game {
     public UUID[] players;
     public Map map;
     public Scoreboard board;
+    public Objective obj;
+    public Team winningTeam;
 
     public Game(int minPlayers, String gameName, GameState gameState, ArrayList<Team> teams) {
         this.minPlayers = minPlayers;
