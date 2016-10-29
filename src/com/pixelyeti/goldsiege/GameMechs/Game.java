@@ -18,7 +18,7 @@ public class Game {
     public String gameName;
     public GameState gameState;
     public ArrayList<Team> teams;
-    public UUID[] players = new UUID[Main.plugin.getConfigFile().getConfigurationSection("Game").getInt("MaxPlayers")];
+    public ArrayList<UUID> players = new ArrayList<>();
     public Map map;
     public Scoreboard board;
     public Objective obj;

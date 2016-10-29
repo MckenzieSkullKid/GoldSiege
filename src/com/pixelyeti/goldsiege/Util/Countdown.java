@@ -37,7 +37,7 @@ public class Countdown{
 
         taskID = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
             public void run() {
-                if(g.players.length >= Main.plugin.getConfigFile().getInt("Game.MinPlayers") && plugin.getConfig()
+                if(g.players.size() >= Main.plugin.getConfigFile().getInt("Game.MinPlayers") && plugin.getConfig()
                         .contains("Game.WaitTimeMin")) {
                     SecondsToCountDown = plugin.getConfig().getInt("Game.WaitTimeMin");
                 } else {

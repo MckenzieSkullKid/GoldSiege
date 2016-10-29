@@ -2,9 +2,7 @@ package com.pixelyeti.goldsiege;
 
 import com.pixelyeti.goldsiege.Executors.ExecutorManager;
 import com.pixelyeti.goldsiege.GameMechs.*;
-import com.pixelyeti.goldsiege.Listeners.InvClick;
-import com.pixelyeti.goldsiege.Listeners.Join;
-import com.pixelyeti.goldsiege.Listeners.PlayerInteract;
+import com.pixelyeti.goldsiege.Listeners.*;
 import com.pixelyeti.goldsiege.Util.ItemStackBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -66,9 +64,11 @@ public class Main extends JavaPlugin {
         pm.registerEvents(new InvClick(), this);
         pm.registerEvents(new Join(this), this);
         pm.registerEvents(new PlayerInteract(), this);
+        pm.registerEvents(new EntityDie(), this);
+        pm.registerEvents(new WeatherChange(), this);
+        pm.registerEvents(new PlayerLeave(), this);
 
         postEnable();
-
     }
 
     public void onDisable() {
@@ -107,6 +107,7 @@ public class Main extends JavaPlugin {
         configData.set("Game.Spectate", true);
         configData.set("Game.AmountGames", 3);
         configData.set("Game.MinPlayers", 4);
+        configData.set("Game.MaxPlayers", 10);
         configData.set("Game.Prefix", "gs");
         configData.set("Maps.Example.Name", "Example");
         configData.set("Maps.Example.NumTeams", 2);

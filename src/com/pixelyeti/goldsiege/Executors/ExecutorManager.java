@@ -10,8 +10,8 @@ public class ExecutorManager {
     private static SetSpawn setSpawn;
 
     public static void registerExecutors() {
-        setSpawn = new SetSpawn(Main.plugin);
-        Main.plugin.getCommand("setspawn").setExecutor(setSpawn);
+        //setSpawn = new SetSpawn(Main.plugin);
+        //Main.plugin.getCommand("setspawn").setExecutor(setSpawn);
 
     }
 }

@@ -1,6 +1,8 @@
 package com.pixelyeti.goldsiege.Listeners;
 
 import com.pixelyeti.goldsiege.GameMechs.GameGUI;
+import com.pixelyeti.goldsiege.GameMechs.GameManager;
+import com.pixelyeti.goldsiege.GameMechs.TeamGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -42,6 +44,12 @@ public class PlayerInteract implements Listener {
             if (event.getAction() == Action.RIGHT_CLICK_AIR
                     || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 GameGUI.openInventory(player.getUniqueId());
+            }
+        } else if (player.getItemInHand().getType() == Material.END_CRYSTAL) {
+            if (event.getAction() == Action.RIGHT_CLICK_AIR
+                    || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                TeamGUI.setItems(GameManager.getPlayersGame(player.getUniqueId()));
+                TeamGUI.openInventory(player.getUniqueId());
             }
         } else if (player.getItemInHand().getType() == Material.CARROT_STICK) {
             if (event.getAction() == Action.RIGHT_CLICK_AIR

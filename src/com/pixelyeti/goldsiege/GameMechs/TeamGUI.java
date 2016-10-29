@@ -27,12 +27,15 @@ public class TeamGUI {
 
     public static void setItems(String gameName) {
         for (Game g : GameManager.getGames()) {
+            System.out.println(g.gameName + " vs " + gameName);
             if(g.gameName.equalsIgnoreCase(gameName)) {
+                System.out.println(g.teams);
                 teams = g.teams;
+                break;
             }
         }
         int numSlots = teams.size() / 9;
-        teamGUI = Bukkit.createInventory(null, (numSlots + 1) * 9, "Teams!");
+        teamGUI = Bukkit.createInventory(null, (numSlots + 2) * 9, "Teams!");
 
         for(int i = 0; i <= (teams.size() - 1); i++) {
             if (!(teams.get(i).getName().equalsIgnoreCase("Spectate"))) {
@@ -40,6 +43,9 @@ public class TeamGUI {
                         , ChatColor.GOLD, teams.get(i).getSize(), 15 - i));
             }
         }
+        int midBottomSlot = teamGUI.getSize() - 5;
+        teamGUI.setItem(midBottomSlot, ItemStackBuilder.createCustomItemStack(Material.EYE_OF_ENDER, "Spectate",
+                ChatColor.GREEN, 1));
     }
 
     public static void openInventory(UUID uuid) {

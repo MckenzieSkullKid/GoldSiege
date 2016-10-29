@@ -25,7 +25,7 @@ public class EntityDie implements Listener {
             int randAmnt = rand.nextInt((max - min) + 1) + min;
 
             e.getDrops().clear();
-            e.getDrops().add(new ItemStack(Material.GOLD_NUGGET, randAmnt));
+            e.getDrops().add(new ItemStack(Material.BEACON, randAmnt));
         }
     }
 
