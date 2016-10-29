@@ -10,7 +10,10 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 /**
  * Created by Callum on 09/06/2015.
@@ -27,24 +30,26 @@ public class Teams {
 
         g.obj = board.registerNewObjective("Gold Blocks", "dummy");
 
-        for(Team t : teamsAr) {
+        for (Team t : g.teams) {
             t.getPlayers().forEach(t::removePlayer);
         }
-        teamsAr.clear();
+        g.teams.clear();
 
-        for(int i=0; i <= teamAmount - 1; i++) {
-            teamsAr.add(i, board.registerNewTeam(teamNames[i]));
+        for (int i = 0; i <= teamAmount - 1; i++) {
+            g.teams.add(i, board.registerNewTeam(teamNames[i]));
         }
 
         if (spectate) {
-            teamsAr.add(teamsAr.size(), board.registerNewTeam("Spectate"));
+            g.teams.add(g.teams.size(), board.registerNewTeam("Spectate"));
         }
     }
 
     public static Team getTeam(UUID uuid) {
-        for(Team t : teamsAr) {
-            if (t.getPlayers().contains(Bukkit.getPlayer(uuid))) {
-                return t;
+        for (Game g : GameManager.getGames()) {
+            for (Team t : g.teams) {
+                if (t.getPlayers().contains(Bukkit.getPlayer(uuid))) {
+                    return t;
+                }
             }
         }
         return null;
@@ -54,13 +59,17 @@ public class Teams {
         return teamsAr;
     }
 
-    public static void addPlayer(UUID uuid, String team) {
+    public static void addPlayer(UUID uuid, String team, String gameName) {
         Player p = Bukkit.getPlayer(uuid);
         boolean wasAdded = false;
-        for(Team t : teamsAr) {
-            if(team.equalsIgnoreCase(t.getName())) {
-                t.addPlayer(Bukkit.getOfflinePlayer(uuid));
-                wasAdded = true;
+        for (Game ga : GameManager.getGames()) {
+            if (ga.gameName.equalsIgnoreCase(gameName)) {
+                for (Team t : ga.teams) {
+                    if (team.equalsIgnoreCase(t.getName())) {
+                        t.addPlayer(Bukkit.getOfflinePlayer(uuid));
+                        wasAdded = true;
+                    }
+                }
             }
         }
         if (!wasAdded) {
@@ -68,10 +77,10 @@ public class Teams {
         }
     }
 
-    public static void removePlayer(UUID uuid) {
+    public static void removePlayer(UUID uuid, String gameName) {
         Player p = Bukkit.getPlayer(uuid);
-        for(Team t : teamsAr) {
-            if(t.getPlayers().contains(p)) {
+        for (Team t : teamsAr) {
+            if (t.getPlayers().contains(p)) {
                 t.removePlayer(p);
             }
         }
@@ -79,8 +88,8 @@ public class Teams {
 
     public static void applyRandPrefix() {
         Random rand = new Random();
-        for(Team t : teamsAr) {
-            t.setPrefix(ChatColor.translateAlternateColorCodes('$', "$" + RandomValue.randomChar(0,16)));
+        for (Team t : teamsAr) {
+            t.setPrefix(ChatColor.translateAlternateColorCodes('$', "$" + RandomValue.randomChar(0, 16)));
         }
     }
 
@@ -92,7 +101,7 @@ public class Teams {
     }
 
     public static int getTeamSize(String t) {
-        for(Team ts : teamsAr) {
+        for (Team ts : teamsAr) {
             if (t.equalsIgnoreCase(ts.getName())) {
                 return ts.getSize();
             }
@@ -102,7 +111,7 @@ public class Teams {
 
     public static int getMaxPlayers() {
         int max = 0;
-        for(Team t : teamsAr) {
+        for (Team t : teamsAr) {
             max += t.getSize();
         }
         return max;
@@ -110,7 +119,7 @@ public class Teams {
 
     public static void incrementScore(Team t, String gameName) {
         Game ga = null;
-        for(Game g : GameManager.getGames()) {
+        for (Game g : GameManager.getGames()) {
             if (g.gameName.equalsIgnoreCase(gameName)) {
                 ga = g;
             }
@@ -124,13 +133,12 @@ public class Teams {
 
     public static void loadTeams() {
         int count = 0;
-        List<String> te = Main.plugin.getConfig().getConfigurationSection("Game").getStringList("Teams");
-        for(String s : te) {
+        List<String> te = Main.plugin.getConfigFile().getConfigurationSection("Game").getStringList("Teams");
+        for (String s : te) {
             Main.plugin.teams[count] = s;
             count += 1;
         }
     }
-
 
 
 }

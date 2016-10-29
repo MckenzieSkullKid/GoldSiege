@@ -1,10 +1,13 @@
 package com.pixelyeti.goldsiege;
 
-import com.pixelyeti.goldsiege.GameMechs.MapManager;
-import com.pixelyeti.goldsiege.Listeners.*;
-import com.pixelyeti.goldsiege.GameMechs.Teams;
-import com.pixelyeti.goldsiege.Util.TeamGUI;
+import com.pixelyeti.goldsiege.Executors.ExecutorManager;
+import com.pixelyeti.goldsiege.GameMechs.*;
+import com.pixelyeti.goldsiege.Listeners.InvClick;
+import com.pixelyeti.goldsiege.Listeners.Join;
+import com.pixelyeti.goldsiege.Listeners.PlayerInteract;
+import com.pixelyeti.goldsiege.Util.ItemStackBuilder;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -13,14 +16,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.Team;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -28,14 +29,15 @@ import java.util.logging.Logger;
  */
 public class Main extends JavaPlugin {
 
-    public static String[] teams = null;
+    private static int teamAmount;
+    public static String[] teams;
     public static boolean postEnabled = false;
-    public ConfigurationSection mapSection = getConfig().getConfigurationSection("Maps");
+    public static ConfigurationSection mapSection;
 
     public static final Logger log = Logger.getLogger("Minecraft");
 
     public static YamlConfiguration config;
-    public File configFile = new File(getDataFolder()+"/config.yml");
+    public File configFile = new File(getDataFolder() + "/config.yml");
     public FileConfiguration configData = YamlConfiguration.loadConfiguration(configFile);
 
     public static Main plugin;
@@ -46,15 +48,23 @@ public class Main extends JavaPlugin {
 
         this.plugin = this;
 
+        teamAmount = getConfigFile().getConfigurationSection("Game").getInt("TeamAmount");
+        teams = new String[teamAmount];
+        mapSection = getConfigFile().getConfigurationSection("Maps");
+
         TeamGUI.initiate();
+        GameGUI.initiate();
+
+        GameManager.createGames();
 
         saveConfig();
+
+        ExecutorManager.registerExecutors();
 
         PluginManager pm = getServer().getPluginManager();
 
         pm.registerEvents(new InvClick(), this);
         pm.registerEvents(new Join(this), this);
-        pm.registerEvents(new NameTag(), this);
         pm.registerEvents(new PlayerInteract(), this);
 
         postEnable();
@@ -86,12 +96,18 @@ public class Main extends JavaPlugin {
 
         config = YamlConfiguration.loadConfiguration(configFile);
     }
+
     public void setupConfigFile() {
-        String[] teams = {"Red", "Blue"};
+        List<String> teams = new ArrayList<>();
+        teams.add("Red");
+        teams.add("Blue");
 
         configData.set("Game.TeamAmount", 2);
         configData.set("Game.Teams", teams);
         configData.set("Game.Spectate", true);
+        configData.set("Game.AmountGames", 3);
+        configData.set("Game.MinPlayers", 4);
+        configData.set("Game.Prefix", "gs");
         configData.set("Maps.Example.Name", "Example");
         configData.set("Maps.Example.NumTeams", 2);
         configData.set("Maps.Example.WorldFileName", "example");
@@ -110,7 +126,7 @@ public class Main extends JavaPlugin {
         saveConfigFile();
     }
 
-    public void saveConfigFile(){
+    public void saveConfigFile() {
         try {
             configData.save(configFile);
         } catch (IOException e) {
@@ -127,7 +143,7 @@ public class Main extends JavaPlugin {
 
     public final void reloadConfigFile() {
         if (configFile == null) {
-            configFile = new File(getDataFolder() +  "/config.yml");
+            configFile = new File(getDataFolder() + "/config.yml");
         }
         config = YamlConfiguration.loadConfiguration(configFile);
         InputStream defConfigStream = getResource("config.yml");
@@ -140,11 +156,6 @@ public class Main extends JavaPlugin {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (label.equalsIgnoreCase("test")) {
-            Player p = (Player) sender;
-            sender.sendMessage(Teams.getTeam(p.getUniqueId()).getSize() + "");
-        }
-
 
         return false;
     }

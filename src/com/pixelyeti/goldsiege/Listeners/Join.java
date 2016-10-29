@@ -25,14 +25,14 @@ public class Join implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
 
-        p.getInventory().setItem(0, ItemStackBuilder.createCustomItemStack(Material.NETHER_STAR, "Teams Selector",
+        p.getInventory().setItem(0, ItemStackBuilder.createCustomItemStack(Material.NETHER_STAR, "Game Selector",
                 ChatColor.AQUA, 1));
         p.getInventory().setItem(8, ItemStackBuilder.createCustomItemStack(Material.WATCH, "Hide players",
                 ChatColor.GREEN, 1));
         p.getInventory().setItem(4, ItemStackBuilder.createCustomItemStack(Material.BARRIER, "Return to Hub",
                 ChatColor.RED, 1));
 
-        for(Player pl : Bukkit.getOnlinePlayers()) {
+        for (Player pl : Bukkit.getOnlinePlayers()) {
             if (pl.getPlayerTime() == pl.getWorld().getFullTime() + 1) {
                 pl.hidePlayer(p);
             }

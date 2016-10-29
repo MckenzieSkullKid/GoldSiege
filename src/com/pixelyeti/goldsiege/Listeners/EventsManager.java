@@ -19,7 +19,6 @@ public class EventsManager {
 
         pm.registerEvents(new InvClick(), plugin);
         pm.registerEvents(new Join(plugin), plugin);
-        pm.registerEvents(new NameTag(), plugin);
         pm.registerEvents(new PlayerInteract(), plugin);
     }
 }

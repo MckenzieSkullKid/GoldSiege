@@ -19,26 +19,43 @@ import java.util.UUID;
  */
 public class GameManager {
 
-    private static int AmountGames = Main.plugin.getConfigFile().getConfigurationSection("Game").getInt("AmountGames");
+    private static int AmountGames;
 
-    private static Game[] games = new Game[AmountGames];
+    private static Game[] games;
 
     public static Game[] getGames() { return games; }
 
     public static void createGames() {
+        AmountGames  = Main.plugin.getConfigFile().getConfigurationSection("Game").getInt("AmountGames");
+        games = new Game[AmountGames];
+
         ConfigurationSection gameSection = Main.plugin.getConfigFile().getConfigurationSection("Game");
 
         int minPlayers = gameSection.getInt("MinPlayers");
         String gamePrefix = gameSection.getString("Prefix");
 
         Teams.loadTeams();
-        if (games.length < AmountGames) {
-            int remainderGames = AmountGames - games.length;
-            for (int i = games.length - 1; i <= remainderGames +
-                    (games.length - 1); i++) {
+        System.out.println(games.length);
+        int gamesSize = 0;
+        for (Game g : games) {
+            if(g != null) {
+                gamesSize += 1;
+            }
+        }
+        System.out.println(gamesSize);
+        if (gamesSize < AmountGames) {
+            int remainderGames = AmountGames - gamesSize;
+            System.out.println("Remain: " + remainderGames);
+            int minValue = 0;
+            if(gamesSize - 1 > 0 ) {
+                minValue = gamesSize -1;
+            }
+            for (int i = minValue; i <= remainderGames +
+                    (minValue - 1); i++) {
                 games[i] = new Game(minPlayers, gamePrefix + i, GameState.WAITING, Teams.teamsAr);
+                System.out.println("Debugging: " + games[i].gameName);
 
-                Teams.creatingTeams(Main.teams.length, Main.teams, true, games[i]);
+                Teams.creatingTeams(Main.plugin.teams.length, Main.plugin.teams, true, games[i]);
 
                 if (Main.plugin.getConfigFile().getBoolean("Game.ChooseMapBefore")) {
                     games[i].map = MapManager.selectMap();
@@ -47,6 +64,21 @@ public class GameManager {
             }
         }
 
+    }
+
+    public static void addToGame(String gameName, UUID id) {
+        int gameSize = 0;
+        for (Game g : getGames()) {
+            if (g.gameName.equalsIgnoreCase(gameName)) {
+                for(UUID uuid : g.players) {
+                    if (uuid != null) {
+                        gameSize += 1;
+                    }
+                }
+                System.out.println(gameSize);
+                g.players[gameSize] = id;
+            }
+        }
     }
 
     public static void startGame(String gameName) {
@@ -95,4 +127,4 @@ public class GameManager {
             p.getLocation().getWorld().spawnEntity(p.getLocation(), EntityType.FIREWORK);
         }
     }
-    }
+}
