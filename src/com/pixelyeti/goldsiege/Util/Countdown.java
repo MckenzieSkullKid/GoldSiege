@@ -35,17 +35,12 @@ public class Countdown{
             }
         }
 
-        taskID = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
-            public void run() {
-                if(g.players.size() >= Main.plugin.getConfigFile().getInt("Game.MinPlayers") && plugin.getConfig()
-                        .contains("Game.WaitTimeMin")) {
+        taskID = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+            if(g.players.size() >= Main.plugin.getConfigFile().getInt("Game.MinPlayers")) {
+                if (plugin.getConfig().contains("Game.WaitTimeMin")) {
                     SecondsToCountDown = plugin.getConfig().getInt("Game.WaitTimeMin");
                 } else {
-                    if (plugin.getConfig().contains("Game.WaitTimeDef")) {
-                        SecondsToCountDown = plugin.getConfig().getInt("Game.WaitTimeDef");
-                    } else {
-                        SecondsToCountDown = 120;
-                    }
+                    SecondsToCountDown = 120;
                 }
 
                 if (!(Main.plugin.getConfig().getBoolean("Game.ChooseMapBefore"))) {
@@ -56,13 +51,13 @@ public class Countdown{
                 }
 
                 SecondsToCountDown--;
-                if (SecondsToCountDown!=0) {
+                if (SecondsToCountDown != 0) {
                     if (SecondsToCountDown == 20) {
                         for (UUID id : g.players) {
                             Player p = Bukkit.getPlayer(id);
                             p.sendMessage(StringUtilities.prefix + ChatColor.AQUA + "The chosen map is: " + m.getName());
                         }
-                    } else if(SecondsToCountDown == 10) {
+                    } else if (SecondsToCountDown == 10) {
                         Map.teleportToSpawns(m.getName(), g);
                     }
 
@@ -79,11 +74,11 @@ public class Countdown{
                     }
                 }
 
-                if (SecondsToCountDown==0) {
+                if (SecondsToCountDown == 0) {
                     plugin.getServer().getScheduler().cancelTask(taskID);
                     for (UUID id : g.players) {
                         Player p = Bukkit.getPlayer(id);
-                        TitleAPI.sendTitle(p,5,5,10, ChatColor.GOLD +
+                        TitleAPI.sendTitle(p, 5, 5, 10, ChatColor.GOLD +
                                 "Game Started!", null);
                         p.setLevel(0);
                     }

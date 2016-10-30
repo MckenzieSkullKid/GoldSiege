@@ -34,7 +34,7 @@ public class MapManager {
             String worldFileName = config.getString("Maps." + s + ".WorldFileName");
             boolean saving = config.getBoolean("Maps." + s + ".Saving");
 
-            maps[count] = new Map(name, numTeams, worldFileName, saving, Map.loadSpawns(name));
+            maps[count] = new Map(name, numTeams, worldFileName, saving, Map.loadSpawns(worldFileName));
 
             count++;
         }
@@ -44,7 +44,8 @@ public class MapManager {
         Map map = null;
         Random rand = new Random();
 
-        int randNum = rand.nextInt(((maps.length - 1) - 0) +1);
+        int randNum = rand.nextInt(((maps.length - 1)) +1);
+        System.out.println(randNum);
         map = maps[randNum];
 
         return map;
@@ -54,5 +55,12 @@ public class MapManager {
         return maps;
     }
 
-
+    public static Map getMap(String mapName) {
+        for (Map m : getMaps()) {
+            if (m.getName().equalsIgnoreCase(mapName)) {
+                return m;
+            }
+        }
+        return null;
+    }
 }

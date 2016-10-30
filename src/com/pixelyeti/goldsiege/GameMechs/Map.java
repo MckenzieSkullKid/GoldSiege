@@ -2,10 +2,7 @@ package com.pixelyeti.goldsiege.GameMechs;
 
 import com.pixelyeti.goldsiege.Main;
 import com.pixelyeti.goldsiege.Util.StringUtilities;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -34,31 +31,33 @@ public class Map {
 
         int spawnsSize = 0;
 
-        for (String s : config.getConfigurationSection("Maps." + name + ".Spawns").getKeys(false)) {
-            spawnsSize += 1;
+        if (config.contains("Maps." + name + ".Spawns")) {
+            for (String s : config.getConfigurationSection("Maps." + name + ".Spawns").getKeys(false)) {
+                spawnsSize += 1;
+            }
+
+            Location[] spawns = new Location[spawnsSize];
+
+            World w = null;
+
+            int count = 0;
+            for (String s : config.getConfigurationSection("Maps." + name + ".Spawns").getKeys(false)) {
+                Location loc = null;
+                double x = config.getConfigurationSection("Maps." + name + ".Spawns." + s).getDouble("x");
+                double y = config.getConfigurationSection("Maps." + name + ".Spawns." + s).getDouble("y");
+                double z = config.getConfigurationSection("Maps." + name + ".Spawns." + s).getDouble("z");
+                float yaw = config.getConfigurationSection("Maps." + name + ".Spawns." + s).getInt("yaw");
+                float pitch = config.getConfigurationSection("Maps." + name + ".Spawns." + s).getInt("pitch");
+
+                w = Bukkit.getServer().getWorld(config.getConfigurationSection("Maps." + name).getString("WorldFileName"));
+                loc = new Location(w, x, y, z, pitch, yaw);
+                spawns[count] = loc;
+
+                count++;
+            }
+            return spawns;
         }
-
-        Location[] spawns = new Location[spawnsSize];
-
-        World w = null;
-
-        int count = 0;
-        for (String s : config.getConfigurationSection("Maps." + name + ".Spawns").getKeys(false)) {
-            Location loc = null;
-            double x = config.getConfigurationSection("Maps." + name + ".Spawns." + s).getDouble("x");
-            double y = config.getConfigurationSection("Maps." + name + ".Spawns." + s).getDouble("y");
-            double z = config.getConfigurationSection("Maps." + name + ".Spawns." + s).getDouble("z");
-            float yaw = config.getConfigurationSection("Maps." + name + ".Spawns." + s).getInt("yaw");
-            float pitch = config.getConfigurationSection("Maps." + name + ".Spawns." + s).getInt("pitch");
-
-            w = Bukkit.getServer().getWorld(config.getConfigurationSection("Maps." + name).getString("WorldFileName"));
-            loc = new Location(w,x,y,z,pitch,yaw);
-
-            spawns[count] = loc;
-
-            count++;
-        }
-        return spawns;
+        return null;
     }
 
     public static void addMapSpawn(String name, String teamName, UUID id) {
@@ -71,7 +70,7 @@ public class Map {
         config.set("Maps." + name + ".Spawns." + teamName + ".z", p.getLocation().getZ());
         config.set("Maps." + name + ".Spawns." + teamName + ".pitch", p.getLocation().getPitch());
         config.set("Maps." + name + ".Spawns." + teamName + ".yaw", p.getLocation().getYaw());
-        Main.plugin.saveConfig();
+        Main.plugin.saveConfigFile();
 
         p.sendMessage(StringUtilities.prefix + ChatColor.GOLD + "Map spawn added correctly!");
 
@@ -87,10 +86,18 @@ public class Map {
     }
 
     public static void teleportToSpawns(String map, Game g) {
+        if (!Bukkit.getWorlds().contains(worldFileName)) {
+            Bukkit.createWorld(new WorldCreator(worldFileName));
+        }
         for (UUID id : g.players) {
             Player p = Bukkit.getPlayer(id);
+            Bukkit.createWorld(new WorldCreator(g.map.getWorldFileName() + g.gameName));
             if (Teams.getTeam(id) != null) {
-                p.teleport(getSpawn(map,Teams.teamsAr.indexOf(Teams.getTeam(id))));
+                Location l = getSpawn(map,Teams.teamsAr.indexOf(Teams.getTeam(id)));
+                System.out.println(Bukkit.getWorlds());
+                l.setWorld(Bukkit.getWorld(g.map.getWorldFileName() + g.gameName));
+                System.out.println(l.getWorld().getName());
+                p.teleport(l);
             }
         }
     }
@@ -102,5 +109,7 @@ public class Map {
     public static int getTeamAmount() {
         return numTeams;
     }
+
+    public static String getWorldFileName() { return worldFileName; }
 
 }

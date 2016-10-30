@@ -1,17 +1,14 @@
 package com.pixelyeti.goldsiege;
 
-import com.pixelyeti.goldsiege.Executors.ExecutorManager;
+import com.pixelyeti.goldsiege.Executors.*;
 import com.pixelyeti.goldsiege.GameMechs.*;
 import com.pixelyeti.goldsiege.Listeners.*;
-import com.pixelyeti.goldsiege.Util.ItemStackBuilder;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -68,6 +65,12 @@ public class Main extends JavaPlugin {
         pm.registerEvents(new WeatherChange(), this);
         pm.registerEvents(new PlayerLeave(), this);
 
+        getCommand("setspawn").setExecutor(new SetSpawn(this));
+        getCommand("spawn").setExecutor(new Spawn(this));
+        getCommand("tpworld").setExecutor(new TPWorld());
+        getCommand("startgame").setExecutor(new StartGame());
+        getCommand("addmapspawn").setExecutor(new AddMapSpawn());
+
         postEnable();
     }
 
@@ -109,6 +112,7 @@ public class Main extends JavaPlugin {
         configData.set("Game.MinPlayers", 4);
         configData.set("Game.MaxPlayers", 10);
         configData.set("Game.Prefix", "gs");
+        configData.set("Game.ChooseMapBefore", false);
         configData.set("Maps.Example.Name", "Example");
         configData.set("Maps.Example.NumTeams", 2);
         configData.set("Maps.Example.WorldFileName", "example");

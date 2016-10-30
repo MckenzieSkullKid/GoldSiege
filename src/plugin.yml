@@ -6,5 +6,13 @@ description: >
              Gold Siege Plugin
 
 commands:
-  anvilmebitch:
-    description: Test command
+  SetSpawn:
+    description: Set the spawn
+  Spawn:
+      description: Teleport to the spawn
+  TPWorld:
+      description: Teleport to a different world
+  StartGame:
+        description: Start the game of the current player
+  AddMapSpawn:
+          description: Add a map spawn to the specified map

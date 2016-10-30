@@ -12,7 +12,5 @@ public class WeatherChange implements Listener {
 
     @EventHandler
     public void onWeatherChange(WeatherChangeEvent e) {
-        if (e.toWeatherState()) {
-        }
     }
 }

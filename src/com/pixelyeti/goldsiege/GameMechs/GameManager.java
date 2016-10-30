@@ -3,6 +3,7 @@ package com.pixelyeti.goldsiege.GameMechs;
 import com.connorlinfoot.titleapi.TitleAPI;
 import com.pixelyeti.goldsiege.Main;
 import com.pixelyeti.goldsiege.Util.Countdown;
+import com.pixelyeti.goldsiege.Util.Countdown2;
 import com.pixelyeti.goldsiege.Util.ItemStackBuilder;
 import com.pixelyeti.goldsiege.Util.StringUtilities;
 import org.bukkit.*;
@@ -91,6 +92,12 @@ public class GameManager {
                 } else {
                     p.sendMessage(StringUtilities.prefix + ChatColor.RED + " This game is full!");
                 }
+
+                if (gameSize >= g.minPlayers && gameSize != 16) {
+                    new Countdown2(g, 120, 30, 20, 10, 5, 4, 3, 2, 1).runTaskTimer(Main.plugin, 0, 1000);
+                } else if (gameSize == 16) {
+                    new Countdown2(g, 30, 30, 20, 10, 5, 4, 3, 2, 1).runTaskTimer(Main.plugin, 0, 1000);
+                }
             }
         }
     }
@@ -98,11 +105,13 @@ public class GameManager {
     public static void removeFromGame(UUID id) {
         Teams.removePlayer(id, GameManager.getPlayersGame(id));
         Game g = getGame(getPlayersGame(id));
-        for (int i = 0; i <= g.players.size() - 1;i++) {
-            System.out.println(g.players.get(i) + " vs " + id);
-            if (g.players.get(i) == id) {
-                g.players.remove(i);
-                break;
+        if(g != null) {
+            for (int i = 0; i <= g.players.size() - 1; i++) {
+                System.out.println(g.players.get(i) + " vs " + id);
+                if (g.players.get(i) == id) {
+                    g.players.remove(i);
+                    break;
+                }
             }
         }
     }
