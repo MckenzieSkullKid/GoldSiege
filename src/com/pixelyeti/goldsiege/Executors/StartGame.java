@@ -2,7 +2,7 @@ package com.pixelyeti.goldsiege.Executors;
 
 import com.pixelyeti.goldsiege.GameMechs.GameManager;
 import com.pixelyeti.goldsiege.Main;
-import com.pixelyeti.goldsiege.Util.Countdown2;
+import com.pixelyeti.goldsiege.Util.Countdown;
 import com.pixelyeti.goldsiege.Util.StringUtilities;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -29,7 +29,7 @@ public class StartGame implements CommandExecutor {
             return false;
         }
         String gameName = GameManager.getPlayersGame(p.getUniqueId());
-        new Countdown2(GameManager.getGame(gameName), 30, 30, 20, 10, 5, 4, 3, 2, 1)
+        new Countdown(GameManager.getGame(gameName), 30, 30, 20, 10, 5, 4, 3, 2, 1)
                 .runTaskTimer(Main.plugin, 0, 20);
         return false;
     }

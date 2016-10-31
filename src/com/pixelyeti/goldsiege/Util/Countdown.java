@@ -1,93 +1,87 @@
 package com.pixelyeti.goldsiege.Util;
 
 import com.connorlinfoot.titleapi.TitleAPI;
-import com.pixelyeti.goldsiege.GameMechs.*;
+import com.pixelyeti.goldsiege.GameMechs.Game;
+import com.pixelyeti.goldsiege.GameMechs.Map;
+import com.pixelyeti.goldsiege.GameMechs.MapManager;
 import com.pixelyeti.goldsiege.Main;
+import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
- * Created by Callum on 11/06/2015.
+ * Created by Callum on 30/10/2016.
  */
-public class Countdown{
+public class Countdown extends BukkitRunnable {
 
-    private static Main plugin;
+    private Game g;
+    private int i;
+    private int tpTime;
+    private int startTime;
+    private ArrayList<Integer> countingNums;
 
-    public Countdown(Main plugin) {
-        this.plugin = plugin;
+    private Map m;
+
+    public Countdown(Game g, int start, int... cNums) {
+        this.g = g;
+        this.i = start;
+        this.startTime = start;
+        this.countingNums = new ArrayList<Integer>();
+
+        for (int c : cNums) {
+            countingNums.add(c);
+        }
     }
 
-    static int taskID;
-    static int taskID2;
-    public static int SecondsToCountDown;
-    public static Map m;
-
-    private static Game g;
-
-    public static Runnable startCountdown(final String gameName) {
-
-        for (Game ga : GameManager.getGames()) {
-            if (ga.gameName.equalsIgnoreCase(gameName)) {
-                g = ga;
-            }
+    @Override
+    public void run() {
+        for (UUID id : g.players) {
+            Player p = Bukkit.getPlayer(id);
+            p.setLevel(i);
+            p.sendMessage(StringUtilities.prefix + ChatColor.GREEN + "Time remaining " + i);
         }
 
-        taskID = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
-            if(g.players.size() >= Main.plugin.getConfigFile().getInt("Game.MinPlayers")) {
-                if (plugin.getConfig().contains("Game.WaitTimeMin")) {
-                    SecondsToCountDown = plugin.getConfig().getInt("Game.WaitTimeMin");
+        if (i == startTime) {
+            if (!(Main.plugin.getConfig().getBoolean("Game.ChooseMapBefore"))) {
+                m = MapManager.selectMap();
+                g.map = m;
+            } else {
+                m = g.map;
+            }
+            FileHandler.copyWorld(Bukkit.getWorld(g.map.getWorldFileName()), g.map.getWorldFileName() + g.gameName);
+            for(UUID id : g.players) {
+                Player p = Bukkit.getPlayer(id);
+                p.sendMessage(StringUtilities.prefix + ChatColor.AQUA + "The chosen map is: " + ChatColor.GOLD +
+                        m.getName());
+            }
+        } else if (i == 0) {
+            for (UUID id : g.players) {
+                Player p = Bukkit.getPlayer(id);
+                TitleAPI.sendTitle(p, 5, 5, 10, ChatColor.GOLD + "Game Started!", null);
+                Map m = new Map();
+                m.teleportToSpawns(m.getName(), g);
+            }
+
+            cancel();
+            return;
+        }
+
+        if (countingNums.contains(i)) {
+            for (UUID id : g.players) {
+                Player p = Bukkit.getPlayer(id);
+                if (i >= 3) {
+                    TitleAPI.sendTitle(p, 5, 5, 10, ChatColor.GREEN + "", null);
                 } else {
-                    SecondsToCountDown = 120;
-                }
-
-                if (!(Main.plugin.getConfig().getBoolean("Game.ChooseMapBefore"))) {
-                    m = MapManager.selectMap();
-                    g.map = m;
-                } else {
-                    m = g.map;
-                }
-
-                SecondsToCountDown--;
-                if (SecondsToCountDown != 0) {
-                    if (SecondsToCountDown == 20) {
-                        for (UUID id : g.players) {
-                            Player p = Bukkit.getPlayer(id);
-                            p.sendMessage(StringUtilities.prefix + ChatColor.AQUA + "The chosen map is: " + m.getName());
-                        }
-                    } else if (SecondsToCountDown == 10) {
-                        Map m = new Map();
-                        m.teleportToSpawns(m.getName(), g);
-                    }
-
-                    for (UUID id : g.players) {
-                        Player p = Bukkit.getPlayer(id);
-                        if (SecondsToCountDown <= 3) {
-                            TitleAPI.sendTitle(p, 5, 5, 10, ChatColor.RED + "" + SecondsToCountDown + ChatColor.GOLD +
-                                    " second(s) left until game starts!", null);
-                        } else if (SecondsToCountDown <= 5 && SecondsToCountDown > 3) {
-                            TitleAPI.sendTitle(p, 5, 5, 10, ChatColor.GREEN + "" + SecondsToCountDown + ChatColor.GOLD +
-                                    " second(s) left until game starts!", null);
-                        }
-                        p.setLevel(SecondsToCountDown);
-                    }
-                }
-
-                if (SecondsToCountDown == 0) {
-                    plugin.getServer().getScheduler().cancelTask(taskID);
-                    for (UUID id : g.players) {
-                        Player p = Bukkit.getPlayer(id);
-                        TitleAPI.sendTitle(p, 5, 5, 10, ChatColor.GOLD +
-                                "Game Started!", null);
-                        p.setLevel(0);
-                    }
-                    g.gameState = GameState.INGAME;
-
+                    TitleAPI.sendTitle(p, 5, 5, 10, ChatColor.RED + "", null);
                 }
             }
-        }, 20L, 20L);
-        return null;
+        }
+        i--;
     }
 }

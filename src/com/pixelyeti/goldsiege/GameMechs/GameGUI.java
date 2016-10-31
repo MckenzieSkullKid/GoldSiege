@@ -26,8 +26,23 @@ public class GameGUI {
 
         for (int i = 0; i <= (GameManager.getGames().length - 1); i++) {
             System.out.println(GameManager.getGames()[i].gameName);
-            gameGUI.setItem(i, ItemStackBuilder.createCustomItemStack(Material.HARD_CLAY, "Game " + GameManager.getGames()[i].gameName
-                    , ChatColor.GOLD, 1, i));
+            int metavalue;
+            switch (GameManager.getGames()[i].gameState) {
+                case WAITING:
+                    metavalue = 5;
+                    break;
+                case INGAME:
+                    metavalue = 14;
+                    break;
+                case RESTARTING:
+                    metavalue = 4;
+                    break;
+                default:
+                    metavalue = i;
+                    break;
+            }
+            gameGUI.setItem(i, ItemStackBuilder.createCustomItemStack(Material.STAINED_CLAY, "Game " + GameManager.getGames()[i].gameName
+                    , ChatColor.GOLD, 1, metavalue));
         }
     }
 

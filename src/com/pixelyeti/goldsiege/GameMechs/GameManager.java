@@ -3,7 +3,6 @@ package com.pixelyeti.goldsiege.GameMechs;
 import com.connorlinfoot.titleapi.TitleAPI;
 import com.pixelyeti.goldsiege.Main;
 import com.pixelyeti.goldsiege.Util.Countdown;
-import com.pixelyeti.goldsiege.Util.Countdown2;
 import com.pixelyeti.goldsiege.Util.ItemStackBuilder;
 import com.pixelyeti.goldsiege.Util.StringUtilities;
 import org.bukkit.*;
@@ -94,9 +93,9 @@ public class GameManager {
                 }
 
                 if (gameSize >= g.minPlayers && gameSize != 16) {
-                    new Countdown2(g, 120, 30, 20, 10, 5, 4, 3, 2, 1).runTaskTimer(Main.plugin, 0, 1000);
+                    new Countdown(g, 120, 30, 20, 10, 5, 4, 3, 2, 1).runTaskTimer(Main.plugin, 0, 1000);
                 } else if (gameSize == 16) {
-                    new Countdown2(g, 30, 30, 20, 10, 5, 4, 3, 2, 1).runTaskTimer(Main.plugin, 0, 1000);
+                    new Countdown(g, 30, 30, 20, 10, 5, 4, 3, 2, 1).runTaskTimer(Main.plugin, 0, 1000);
                 }
             }
         }
@@ -131,7 +130,8 @@ public class GameManager {
     }
 
     public static void startGame(String gameName) {
-        Countdown.startCountdown(gameName);
+        new Countdown(GameManager.getGame(gameName), 30, 30, 20, 10, 5, 4, 3, 2, 1)
+                .runTaskTimer(Main.plugin, 0, 20);
     }
 
     public static boolean checkGameWon(String gameName) {
