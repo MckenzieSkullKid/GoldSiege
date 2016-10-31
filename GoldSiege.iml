@@ -10,34 +10,18 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://F:/API's/iTag-1.1.0-SNAPSHOT.jar!/" />
+          <root url="jar://$MODULE_DIR$/../Java APIs/spigot-1.10.2.jar!/" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/../Java APIs/spigot-1.10.2.jar!/" />
+        </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://F:/API's/bukkit-1.8.3-R0.1-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://F:/API's/spigot-api-1.8.3-R0.1-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://F:/API's/TitleAPI.jar!/" />
+          <root url="jar://$MODULE_DIR$/../Java APIs/TitleAPI-1.7.4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

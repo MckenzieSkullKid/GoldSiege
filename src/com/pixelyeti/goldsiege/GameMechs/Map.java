@@ -12,11 +12,11 @@ import java.util.UUID;
  * Created by Callum on 11/06/2015.
  */
 public class Map {
-    public static String name;
-    public static int numTeams;
-    public static String worldFileName;
-    public static boolean saving;
-    public static Location[] spawns;
+    public String name;
+    public int numTeams;
+    public String worldFileName;
+    public boolean saving;
+    public Location[] spawns;
 
     public Map(String name, int numTeams, String worldFileName, boolean saving, Location[] spawns) {
         this.name = name;
@@ -26,7 +26,10 @@ public class Map {
         this.spawns = spawns;
     }
 
-    public static Location[] loadSpawns(String name) {
+    public Map() {
+    }
+
+    public Location[] loadSpawns(String name) {
         FileConfiguration config = Main.plugin.getConfigFile();
 
         int spawnsSize = 0;
@@ -60,7 +63,7 @@ public class Map {
         return null;
     }
 
-    public static void addMapSpawn(String name, String teamName, UUID id) {
+    public void addMapSpawn(String name, String teamName, UUID id) {
         Player p = Bukkit.getPlayer(id);
 
         FileConfiguration config = Main.plugin.getConfigFile();
@@ -76,7 +79,7 @@ public class Map {
 
     }
 
-    public static Location getSpawn(String map, int teamID) {
+    public Location getSpawn(String map, int teamID) {
         for (Map m : MapManager.getMaps()) {
             if (m.name.equalsIgnoreCase(map)) {
                 return m.spawns[teamID];
@@ -85,7 +88,7 @@ public class Map {
         return null;
     }
 
-    public static void teleportToSpawns(String map, Game g) {
+    public void teleportToSpawns(String map, Game g) {
         if (!Bukkit.getWorlds().contains(worldFileName)) {
             Bukkit.createWorld(new WorldCreator(worldFileName));
         }
@@ -102,14 +105,29 @@ public class Map {
         }
     }
 
-    public static String getName() {
+    public String getName() {
         return name;
     }
 
-    public static int getTeamAmount() {
+    public void setName(String mapName) {
+        name = mapName;
+        loadSpawns(name);
+    }
+
+    public int getTeamAmount() {
         return numTeams;
     }
 
-    public static String getWorldFileName() { return worldFileName; }
+    public void setTeamAmount(int amntTeams) { numTeams = amntTeams; }
+
+    public String getWorldFileName() { return worldFileName; }
+
+    public void setWorldFileName(String world) { worldFileName = world; }
+
+    public boolean getSaving() { return saving; }
+
+    public void setSaving(boolean value) { saving = value; }
+
+    public void setSpawns(Location[] spawnLocs) { spawns = spawnLocs; }
 
 }

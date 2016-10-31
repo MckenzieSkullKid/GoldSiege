@@ -5,6 +5,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import javax.security.auth.login.Configuration;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -12,30 +13,23 @@ import java.util.Random;
  */
 public class MapManager {
 
-    public static Map[] maps = null;
-    public static int count = 0;
+    public static ArrayList<Map> maps = new ArrayList<>();
+    private static int count = 0;
+    private Map m = new Map();
 
     public static final void initiateMaps() {
-        FileConfiguration config = Main.plugin.getConfigFile(); // <----------- ERRORING FOR NO REASON D:
+        FileConfiguration config = Main.plugin.getConfigFile();
         ConfigurationSection configSection = config.getConfigurationSection("Maps");
 
-        int mapsSize = 0;
-
         for (String s : configSection.getKeys(false)) {
-            mapsSize++;
-        }
+            Map m = new Map();
 
-        maps = new Map[mapsSize];
+            m.setName(config.getString("Maps." + s + ".Name"));
+            m.setTeamAmount(config.getInt("Maps." + s + ".NumTeams"));
+            m.setWorldFileName(config.getString("Maps." + s + ".WorldFileName"));
+            m.setSaving(config.getBoolean("Maps." + s + ".Saving"));
 
-        for (String s : configSection.getKeys(false)) {
-
-            String name = config.getString("Maps." + s + ".Name");
-            int numTeams = config.getInt("Maps." + s + ".NumTeams");
-            String worldFileName = config.getString("Maps." + s + ".WorldFileName");
-            boolean saving = config.getBoolean("Maps." + s + ".Saving");
-
-            maps[count] = new Map(name, numTeams, worldFileName, saving, Map.loadSpawns(worldFileName));
-
+            maps.add(m);
             count++;
         }
     }
@@ -44,14 +38,14 @@ public class MapManager {
         Map map = null;
         Random rand = new Random();
 
-        int randNum = rand.nextInt(((maps.length - 1)) +1);
+        int randNum = rand.nextInt(((maps.size() - 1)) +1);
         System.out.println(randNum);
-        map = maps[randNum];
+        map = maps.get(randNum);
 
         return map;
     }
 
-    public static Map[] getMaps() {
+    public static ArrayList<Map> getMaps() {
         return maps;
     }
 

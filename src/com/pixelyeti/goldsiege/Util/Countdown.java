@@ -58,7 +58,8 @@ public class Countdown{
                             p.sendMessage(StringUtilities.prefix + ChatColor.AQUA + "The chosen map is: " + m.getName());
                         }
                     } else if (SecondsToCountDown == 10) {
-                        Map.teleportToSpawns(m.getName(), g);
+                        Map m = new Map();
+                        m.teleportToSpawns(m.getName(), g);
                     }
 
                     for (UUID id : g.players) {

@@ -64,7 +64,8 @@ public class Countdown2 extends BukkitRunnable {
             for (UUID id : g.players) {
                 Player p = Bukkit.getPlayer(id);
                 TitleAPI.sendTitle(p, 5, 5, 10, ChatColor.GOLD + "Game Started!", null);
-                Map.teleportToSpawns(m.getName(), g);
+                Map m = new Map();
+                m.teleportToSpawns(m.getName(), g);
             }
 
             cancel();
