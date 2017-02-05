@@ -46,7 +46,7 @@ public class InvClick implements Listener {
             }
         } else if (e.getInventory().getName().equalsIgnoreCase(GameGUI.gameGUI.getName())) {
             System.out.println(e.getCurrentItem());
-            if (e.getCurrentItem().getType() == Material.HARD_CLAY) {
+            if (e.getCurrentItem().getType() == Material.STAINED_CLAY) {
                 e.setCancelled(true);
                 String game = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).substring(5);
                 String pGame = GameManager.getPlayersGame(e.getWhoClicked().getUniqueId());

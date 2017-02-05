@@ -16,3 +16,5 @@ commands:
         description: Start the game of the current player
   AddMapSpawn:
           description: Add a map spawn to the specified map
+  ListSpawns:
+          description: Add a map spawn to the specified map

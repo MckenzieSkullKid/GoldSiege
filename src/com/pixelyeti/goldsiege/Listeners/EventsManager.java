@@ -14,11 +14,15 @@ public class EventsManager {
         this.plugin = plugin;
     }
 
-    public static void registerEvents() {
-        PluginManager pm = plugin.getServer().getPluginManager();
-
+    public static void registerEvents(PluginManager pm) {
+        pm.registerEvents(new EntityDie(), plugin);
+        pm.registerEvents(new EntitySpawn(), plugin);
         pm.registerEvents(new InvClick(), plugin);
+        pm.registerEvents(new ItemDrop(), plugin);
         pm.registerEvents(new Join(plugin), plugin);
         pm.registerEvents(new PlayerInteract(), plugin);
+        pm.registerEvents(new PlayerLeave(), plugin);
+        pm.registerEvents(new WeatherChange(), plugin);
+
     }
 }

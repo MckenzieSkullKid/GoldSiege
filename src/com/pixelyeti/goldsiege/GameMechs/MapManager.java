@@ -1,10 +1,11 @@
 package com.pixelyeti.goldsiege.GameMechs;
 
 import com.pixelyeti.goldsiege.Main;
+import org.bukkit.Bukkit;
+import org.bukkit.WorldCreator;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import javax.security.auth.login.Configuration;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -18,7 +19,7 @@ public class MapManager {
     private Map m = new Map();
 
     public static final void initiateMaps() {
-        FileConfiguration config = Main.plugin.getConfigFile();
+        FileConfiguration config = Main.instance.getConfigFile();
         ConfigurationSection configSection = config.getConfigurationSection("Maps");
 
         for (String s : configSection.getKeys(false)) {
@@ -28,9 +29,12 @@ public class MapManager {
             m.setTeamAmount(config.getInt("Maps." + s + ".NumTeams"));
             m.setWorldFileName(config.getString("Maps." + s + ".WorldFileName"));
             m.setSaving(config.getBoolean("Maps." + s + ".Saving"));
+            m.loadSpawns(m.getWorldFileName());
 
             maps.add(m);
             count++;
+
+            Bukkit.createWorld(new WorldCreator(m.getWorldFileName()));
         }
     }
 

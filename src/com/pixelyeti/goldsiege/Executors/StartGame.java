@@ -30,7 +30,7 @@ public class StartGame implements CommandExecutor {
         }
         String gameName = GameManager.getPlayersGame(p.getUniqueId());
         new Countdown(GameManager.getGame(gameName), 30, 30, 20, 10, 5, 4, 3, 2, 1)
-                .runTaskTimer(Main.plugin, 0, 20);
+                .runTaskTimer(Main.instance, 0, 20);
         return false;
     }
 }

@@ -5,13 +5,11 @@ import com.pixelyeti.goldsiege.GameMechs.Game;
 import com.pixelyeti.goldsiege.GameMechs.Map;
 import com.pixelyeti.goldsiege.GameMechs.MapManager;
 import com.pixelyeti.goldsiege.Main;
-import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -48,7 +46,7 @@ public class Countdown extends BukkitRunnable {
         }
 
         if (i == startTime) {
-            if (!(Main.plugin.getConfig().getBoolean("Game.ChooseMapBefore"))) {
+            if (!(Main.instance.getConfig().getBoolean("Game.ChooseMapBefore"))) {
                 m = MapManager.selectMap();
                 g.map = m;
             } else {
@@ -76,9 +74,9 @@ public class Countdown extends BukkitRunnable {
             for (UUID id : g.players) {
                 Player p = Bukkit.getPlayer(id);
                 if (i >= 3) {
-                    TitleAPI.sendTitle(p, 5, 5, 10, ChatColor.GREEN + "", null);
+                    TitleAPI.sendTitle(p, 5, 5, 10, ChatColor.GREEN + "" + i, null);
                 } else {
-                    TitleAPI.sendTitle(p, 5, 5, 10, ChatColor.RED + "", null);
+                    TitleAPI.sendTitle(p, 5, 5, 10, ChatColor.RED + "" + i, null);
                 }
             }
         }

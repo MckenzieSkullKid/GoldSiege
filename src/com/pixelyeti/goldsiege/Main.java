@@ -19,9 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-/**
- * Created by Callum on 09/06/2015.
- */
 public class Main extends JavaPlugin {
 
     private static int teamAmount;
@@ -35,13 +32,17 @@ public class Main extends JavaPlugin {
     public File configFile = new File(getDataFolder() + "/config.yml");
     public FileConfiguration configData = YamlConfiguration.loadConfiguration(configFile);
 
-    public static Main plugin;
+    public static Main instance;
+
+    public static Main getInstance() {
+        return instance;
+    }
 
     public void onEnable() {
         createConfigFile();
         reloadConfig();
 
-        this.plugin = this;
+        this.instance = this;
 
         teamAmount = getConfigFile().getConfigurationSection("Game").getInt("TeamAmount");
         teams = new String[teamAmount];
@@ -58,18 +59,22 @@ public class Main extends JavaPlugin {
 
         PluginManager pm = getServer().getPluginManager();
 
+        EventsManager.registerEvents(pm);
+
         pm.registerEvents(new InvClick(), this);
         pm.registerEvents(new Join(this), this);
         pm.registerEvents(new PlayerInteract(), this);
         pm.registerEvents(new EntityDie(), this);
         pm.registerEvents(new WeatherChange(), this);
         pm.registerEvents(new PlayerLeave(), this);
+        pm.registerEvents(new EntitySpawn(), this);
 
         getCommand("setspawn").setExecutor(new SetSpawn(this));
         getCommand("spawn").setExecutor(new Spawn(this));
         getCommand("tpworld").setExecutor(new TPWorld());
         getCommand("startgame").setExecutor(new StartGame());
         getCommand("addmapspawn").setExecutor(new AddMapSpawn());
+        getCommand("listspawns").setExecutor(new ListAllMapSpawns());
 
         postEnable();
     }

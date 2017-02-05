@@ -56,6 +56,19 @@ public class PlayerInteract implements Listener {
                     || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 player.getWorld().strikeLightning(player.getTargetBlock((HashSet<Byte>)null, 100).getLocation());
             }
+        } else if (player.getItemInHand().getType() == Material.GOLD_SPADE) {
+            if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
+                event.setCancelled(true);
+
+                for (int x = event.getClickedBlock().getX() - 1;x <= event.getClickedBlock().getX()  + 1; x++) {
+                    for (int y = event.getClickedBlock().getY() + 1; y <= event.getClickedBlock().getY() + 1; y++) {
+                        for (int z = event.getClickedBlock().getZ() - 1; z <= event.getClickedBlock().getZ() + 1; z++) {
+                            Location location = new Location(player.getWorld(), x, y, z);
+                            location.getBlock().setType(Material.DIAMOND_BLOCK);
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -34,10 +34,10 @@ public class GameManager {
     }
 
     public static void createGames() {
-        AmountGames  = Main.plugin.getConfigFile().getConfigurationSection("Game").getInt("AmountGames");
+        AmountGames  = Main.instance.getConfigFile().getConfigurationSection("Game").getInt("AmountGames");
         games = new Game[AmountGames];
 
-        ConfigurationSection gameSection = Main.plugin.getConfigFile().getConfigurationSection("Game");
+        ConfigurationSection gameSection = Main.instance.getConfigFile().getConfigurationSection("Game");
 
         int minPlayers = gameSection.getInt("MinPlayers");
         String gamePrefix = gameSection.getString("Prefix");
@@ -59,9 +59,9 @@ public class GameManager {
             for (int i = minValue; i <= remainderGames +
                     (minValue - 1); i++) {
                 games[i] = new Game(minPlayers, gamePrefix + i, GameState.WAITING, Teams.teamsAr);
-                Teams.creatingTeams(Main.plugin.teams.length, Main.plugin.teams, true, games[i]);
+                Teams.creatingTeams(Main.instance.teams.length, Main.instance.teams, true, games[i]);
 
-                if (Main.plugin.getConfigFile().getBoolean("Game.ChooseMapBefore")) {
+                if (Main.instance.getConfigFile().getBoolean("Game.ChooseMapBefore")) {
                     games[i].map = MapManager.selectMap();
                 }
 
@@ -93,9 +93,9 @@ public class GameManager {
                 }
 
                 if (gameSize >= g.minPlayers && gameSize != 16) {
-                    new Countdown(g, 120, 30, 20, 10, 5, 4, 3, 2, 1).runTaskTimer(Main.plugin, 0, 1000);
+                    new Countdown(g, 120, 30, 20, 10, 5, 4, 3, 2, 1).runTaskTimer(Main.instance, 0, 1000);
                 } else if (gameSize == 16) {
-                    new Countdown(g, 30, 30, 20, 10, 5, 4, 3, 2, 1).runTaskTimer(Main.plugin, 0, 1000);
+                    new Countdown(g, 30, 30, 20, 10, 5, 4, 3, 2, 1).runTaskTimer(Main.instance, 0, 1000);
                 }
             }
         }
@@ -131,7 +131,7 @@ public class GameManager {
 
     public static void startGame(String gameName) {
         new Countdown(GameManager.getGame(gameName), 30, 30, 20, 10, 5, 4, 3, 2, 1)
-                .runTaskTimer(Main.plugin, 0, 20);
+                .runTaskTimer(Main.instance, 0, 20);
     }
 
     public static boolean checkGameWon(String gameName) {

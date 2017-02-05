@@ -33,7 +33,7 @@ public class SetSpawn implements CommandExecutor {
             return false;
         }
 
-        ConfigurationSection serverSection = Main.plugin.getConfigFile().getConfigurationSection("Server");
+        ConfigurationSection serverSection = Main.instance.getConfigFile().getConfigurationSection("Server");
 
         Location spawn = p.getLocation();
         serverSection.set("Spawn.World", spawn.getWorld().getName());
@@ -42,7 +42,7 @@ public class SetSpawn implements CommandExecutor {
         serverSection.set("Spawn.Z", spawn.getZ());
         serverSection.set("Spawn.Yaw", spawn.getYaw());
         serverSection.set("Spawn.Pitch", spawn.getPitch());
-        Main.plugin.saveConfigFile();
+        Main.instance.saveConfigFile();
 
         p.sendMessage(StringUtilities.prefix + ChatColor.GREEN + "The Server spawn has been set!");
 
