@@ -1,5 +1,0 @@
-<root>
-  <item name='org.bukkit.configuration.file.YamlConfiguration org.bukkit.configuration.file.YamlConfiguration loadConfiguration(java.io.InputStream)'>
-    <annotation name='java.lang.annotation.Deprecated'/>
-  </item>
-</root>

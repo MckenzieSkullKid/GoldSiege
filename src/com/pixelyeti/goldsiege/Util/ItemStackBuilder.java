@@ -13,10 +13,15 @@ import java.util.List;
  */
 public class ItemStackBuilder {
 
-    public static ItemStack createCustomItemStack(Material m, String name, ChatColor colour,  int size, int data) {
+    public static ItemStack createCustomItemStack(Material m, String name, ChatColor colour,  int size, int data, String... lore) {
         ItemStack i = new ItemStack(m, size, (short)0, (byte)data);
         ItemMeta im = i.getItemMeta();
         im.setDisplayName(colour + name);
+        List<String> text = new ArrayList<>();
+        for (String s : lore) {
+            text.add(ChatColor.DARK_PURPLE.toString() + ChatColor.ITALIC + s);
+        }
+        im.setLore(text);
         i.setItemMeta(im);
         return i;
     }
@@ -31,6 +36,7 @@ public class ItemStackBuilder {
         List<String> is = new ArrayList<>();
         is.add(ChatColor.DARK_GRAY + description);
         is.add(ChatColor.LIGHT_PURPLE + price + " xp levels!");
+        im.setLore(is);
         return i;
     }
 

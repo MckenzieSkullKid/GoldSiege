@@ -19,7 +19,7 @@ public class MapManager {
     private Map m = new Map();
 
     public static final void initiateMaps() {
-        FileConfiguration config = Main.instance.getConfigFile();
+        FileConfiguration config = Main.getInstance().getConfig();
         ConfigurationSection configSection = config.getConfigurationSection("Maps");
 
         for (String s : configSection.getKeys(false)) {

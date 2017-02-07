@@ -30,7 +30,7 @@ public class Map {
     }
 
     public Location[] loadSpawns(String name) {
-        FileConfiguration config = Main.instance.getConfigFile();
+        FileConfiguration config = Main.getInstance().getConfig();
 
         int spawnsSize = 0;
 
@@ -68,14 +68,14 @@ public class Map {
     public void addMapSpawn(String name, String teamName, UUID id) {
         Player p = Bukkit.getPlayer(id);
 
-        FileConfiguration config = Main.instance.getConfigFile();
+        FileConfiguration config = Main.getInstance().getConfig();
 
         config.set("Maps." + name + ".Spawns." + teamName + ".x", p.getLocation().getX());
         config.set("Maps." + name + ".Spawns." + teamName + ".y", p.getLocation().getY());
         config.set("Maps." + name + ".Spawns." + teamName + ".z", p.getLocation().getZ());
         config.set("Maps." + name + ".Spawns." + teamName + ".pitch", p.getLocation().getPitch());
         config.set("Maps." + name + ".Spawns." + teamName + ".yaw", p.getLocation().getYaw());
-        Main.instance.saveConfigFile();
+        Main.instance.saveConfig();
 
         p.sendMessage(StringUtilities.prefix + ChatColor.GOLD + "Map spawn added correctly!");
 

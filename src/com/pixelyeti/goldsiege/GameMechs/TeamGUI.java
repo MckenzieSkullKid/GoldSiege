@@ -1,12 +1,11 @@
 package com.pixelyeti.goldsiege.GameMechs;
 
-import com.pixelyeti.goldsiege.GameMechs.Teams;
+import com.pixelyeti.goldsiege.Main;
 import com.pixelyeti.goldsiege.Util.ItemStackBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scoreboard.Team;
 
@@ -37,10 +36,16 @@ public class TeamGUI {
         int numSlots = teams.size() / 9;
         teamGUI = Bukkit.createInventory(null, (numSlots + 2) * 9, "Teams!");
 
+        System.out.println(teams.size());
+
         for(int i = 0; i <= (teams.size() - 1); i++) {
             if (!(teams.get(i).getName().equalsIgnoreCase("Spectate"))) {
+                System.out.println(teams.get(i).getName());
+                System.out.println(ItemStackBuilder.createCustomItemStack(Material.BANNER, "Team " + teams.get(i).getName()
+                        , ChatColor.GOLD, teams.get(i).getSize() + 1, 15 - i));
                 teamGUI.setItem(i, ItemStackBuilder.createCustomItemStack(Material.BANNER, "Team " + teams.get(i).getName()
-                        , ChatColor.GOLD, teams.get(i).getSize(), 15 - i));
+                        , ChatColor.GOLD, 1, 15 - i, teams.get(i).getSize() + "/" +
+                                Main.getInstance().getConfig().get("Game.MaxPlayers") + " Players", "Click to Join!"));
             }
         }
         int midBottomSlot = teamGUI.getSize() - 5;
@@ -50,7 +55,7 @@ public class TeamGUI {
 
     public static void openInventory(UUID uuid) {
         Player p = Bukkit.getPlayer(uuid);
-        //setItems();
+        setItems(GameManager.getPlayersGame(uuid));
         p.openInventory(teamGUI);
     }
 }

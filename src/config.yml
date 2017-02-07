@@ -1,11 +1,19 @@
 #Config YML Defaults
-
 Game:
   TeamAmount: 2
   Teams:
   - Red
   - Blue
   Spectate: true
+  AmountGames: 11
+  MinPlayers: 4
+  Prefix: gs
+  MaxPlayers: 16
+  WaitTimeMin: 120
+  ChooseMapBefore: false
+#                            #
+# Example map included below #
+#                            #
 Maps:
   Example:
     Name: Example
@@ -25,4 +33,3 @@ Maps:
         z: 1
         yaw: 1
         pitch: 1
-Test: true

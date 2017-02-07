@@ -2,6 +2,7 @@ package com.pixelyeti.goldsiege.Listeners;
 
 import com.pixelyeti.goldsiege.GameMechs.*;
 import com.pixelyeti.goldsiege.Util.StringUtilities;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -49,12 +50,13 @@ public class InvClick implements Listener {
             if (e.getCurrentItem().getType() == Material.STAINED_CLAY) {
                 e.setCancelled(true);
                 String game = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).substring(5);
+                Bukkit.broadcastMessage(game + "");
                 String pGame = GameManager.getPlayersGame(e.getWhoClicked().getUniqueId());
                 if (pGame != null) {
                     e.getWhoClicked().sendMessage(StringUtilities.errorMessage + " Already in a game!");
                     return;
                 }
-                GameManager.addToGame(game, e.getWhoClicked().getUniqueId());
+                GameManager.addToGame(game + "", e.getWhoClicked().getUniqueId());
                 pGame = GameManager.getPlayersGame(e.getWhoClicked().getUniqueId());
                 TeamGUI.setItems(pGame);
                 TeamGUI.openInventory(e.getWhoClicked().getUniqueId());

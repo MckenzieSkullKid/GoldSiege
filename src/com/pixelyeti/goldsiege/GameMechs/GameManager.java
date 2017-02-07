@@ -34,10 +34,10 @@ public class GameManager {
     }
 
     public static void createGames() {
-        AmountGames  = Main.instance.getConfigFile().getConfigurationSection("Game").getInt("AmountGames");
+        AmountGames  = Main.getInstance().getConfig().getConfigurationSection("Game").getInt("AmountGames");
         games = new Game[AmountGames];
 
-        ConfigurationSection gameSection = Main.instance.getConfigFile().getConfigurationSection("Game");
+        ConfigurationSection gameSection = Main.getInstance().getConfig().getConfigurationSection("Game");
 
         int minPlayers = gameSection.getInt("MinPlayers");
         String gamePrefix = gameSection.getString("Prefix");
@@ -61,7 +61,7 @@ public class GameManager {
                 games[i] = new Game(minPlayers, gamePrefix + i, GameState.WAITING, Teams.teamsAr);
                 Teams.creatingTeams(Main.instance.teams.length, Main.instance.teams, true, games[i]);
 
-                if (Main.instance.getConfigFile().getBoolean("Game.ChooseMapBefore")) {
+                if (Main.getInstance().getConfig().getBoolean("Game.ChooseMapBefore")) {
                     games[i].map = MapManager.selectMap();
                 }
 

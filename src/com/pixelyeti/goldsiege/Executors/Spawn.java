@@ -32,7 +32,7 @@ public class Spawn implements CommandExecutor {
             return false;
         }
 
-        ConfigurationSection serverSection = Main.instance.getConfigFile().getConfigurationSection("Server");
+        ConfigurationSection serverSection = Main.getInstance().getConfig().getConfigurationSection("Server");
         if (!serverSection.contains("Spawn")) {
             p.teleport(p.getLocation().getWorld().getSpawnLocation());
             p.sendMessage(StringUtilities.prefix + ChatColor.GREEN + "Teleported to spawn!");

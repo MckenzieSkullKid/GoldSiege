@@ -133,9 +133,9 @@ public class Teams {
 
     public static void loadTeams() {
         int count = 0;
-        List<String> te = Main.instance.getConfigFile().getConfigurationSection("Game").getStringList("Teams");
+        List<String> te = Main.getInstance().getConfig().getConfigurationSection("Game").getStringList("Teams");
         for (String s : te) {
-            Main.instance.teams[count] = s;
+            Main.getInstance().teams[count] = s;
             count += 1;
         }
     }

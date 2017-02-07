@@ -1,12 +1,10 @@
 package com.pixelyeti.goldsiege.GameMechs;
 
-import com.pixelyeti.goldsiege.Main;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.UUID;
 
 /**

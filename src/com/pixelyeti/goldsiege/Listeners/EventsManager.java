@@ -8,21 +8,15 @@ import org.bukkit.plugin.PluginManager;
  */
 public class EventsManager {
 
-    private static Main plugin;
-
-    public EventsManager(Main plugin) {
-        this.plugin = plugin;
-    }
-
     public static void registerEvents(PluginManager pm) {
-        pm.registerEvents(new EntityDie(), plugin);
-        pm.registerEvents(new EntitySpawn(), plugin);
-        pm.registerEvents(new InvClick(), plugin);
-        pm.registerEvents(new ItemDrop(), plugin);
-        pm.registerEvents(new Join(plugin), plugin);
-        pm.registerEvents(new PlayerInteract(), plugin);
-        pm.registerEvents(new PlayerLeave(), plugin);
-        pm.registerEvents(new WeatherChange(), plugin);
+        pm.registerEvents(new EntityDie(), Main.getInstance());
+        pm.registerEvents(new EntitySpawn(), Main.getInstance());
+        pm.registerEvents(new InvClick(), Main.getInstance());
+        pm.registerEvents(new ItemDrop(), Main.getInstance());
+        pm.registerEvents(new Join(Main.getInstance()), Main.getInstance());
+        pm.registerEvents(new PlayerInteract(), Main.getInstance());
+        pm.registerEvents(new PlayerLeave(), Main.getInstance());
+        pm.registerEvents(new WeatherChange(), Main.getInstance());
 
     }
 }
