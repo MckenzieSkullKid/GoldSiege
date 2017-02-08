@@ -29,8 +29,9 @@ public class StartGame implements CommandExecutor {
             return false;
         }
         String gameName = GameManager.getPlayersGame(p.getUniqueId());
-        new Countdown(GameManager.getGame(gameName), 30, 30, 20, 10, 5, 4, 3, 2, 1)
-                .runTaskTimer(Main.instance, 0, 20);
+        GameManager.startGame(gameName);
+        //new Countdown(GameManager.getGame(gameName), 10, 30, 20, 10, 5, 4, 3, 2, 1)
+        //        .runTaskTimer(Main.getInstance(), 0, 20);
         return false;
     }
 }

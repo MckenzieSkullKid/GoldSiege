@@ -2,11 +2,14 @@ package com.pixelyeti.goldsiege.Listeners;
 
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -25,7 +28,16 @@ public class EntityDie implements Listener {
             int randAmnt = rand.nextInt((max - min) + 1) + min;
 
             e.getDrops().clear();
-            e.getDrops().add(new ItemStack(Material.BEACON, randAmnt));
+            e.getDrops().add(new ItemStack(Material.GOLD_NUGGET, randAmnt));
+        }
+        if (e.getEntityType() == EntityType.PLAYER) {
+            List<ItemStack> newDrops = new ArrayList<>();
+            for (ItemStack i : e.getDrops()) {
+                if (i.getType() == Material.GOLD_NUGGET)
+                    newDrops.add(i);
+            }
+            e.getDrops().clear();
+            e.getDrops().addAll(newDrops);
         }
     }
 

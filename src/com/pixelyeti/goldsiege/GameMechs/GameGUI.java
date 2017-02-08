@@ -27,22 +27,27 @@ public class GameGUI {
         for (int i = 0; i <= (GameManager.getGames().length - 1); i++) {
             System.out.println(GameManager.getGames()[i].gameName);
             int metavalue;
+            String gameState;
             switch (GameManager.getGames()[i].gameState) {
                 case WAITING:
                     metavalue = 5;
+                    gameState = ChatColor.GREEN + "Waiting!";
                     break;
                 case INGAME:
                     metavalue = 14;
+                    gameState = ChatColor.RED + "Ingame!";
                     break;
                 case RESTARTING:
                     metavalue = 4;
+                    gameState = ChatColor.YELLOW + "Restarting!";
                     break;
                 default:
                     metavalue = i;
+                    gameState = ChatColor.RED + "ERROR!";
                     break;
             }
             gameGUI.setItem(i, ItemStackBuilder.createCustomItemStack(Material.STAINED_CLAY, "Game " + GameManager.getGames()[i].gameName
-                    , ChatColor.GOLD, 1, metavalue));
+                    , ChatColor.GOLD, 1, metavalue, gameState));
         }
     }
 

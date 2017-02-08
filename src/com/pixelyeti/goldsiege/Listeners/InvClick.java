@@ -50,16 +50,19 @@ public class InvClick implements Listener {
             if (e.getCurrentItem().getType() == Material.STAINED_CLAY) {
                 e.setCancelled(true);
                 String game = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).substring(5);
-                Bukkit.broadcastMessage(game + "");
                 String pGame = GameManager.getPlayersGame(e.getWhoClicked().getUniqueId());
                 if (pGame != null) {
                     e.getWhoClicked().sendMessage(StringUtilities.errorMessage + " Already in a game!");
                     return;
                 }
-                GameManager.addToGame(game + "", e.getWhoClicked().getUniqueId());
-                pGame = GameManager.getPlayersGame(e.getWhoClicked().getUniqueId());
-                TeamGUI.setItems(pGame);
-                TeamGUI.openInventory(e.getWhoClicked().getUniqueId());
+                if (GameManager.getGame(game).gameState == GameState.WAITING) {
+                    GameManager.addToGame(game, e.getWhoClicked().getUniqueId());
+                    pGame = GameManager.getPlayersGame(e.getWhoClicked().getUniqueId());
+                    TeamGUI.setItems(pGame);
+                    TeamGUI.openInventory(e.getWhoClicked().getUniqueId());
+                } else {
+                    e.getWhoClicked().sendMessage(StringUtilities.prefix + ChatColor.RED + " You cannot join that game!");
+                }
             }
         } else {
             return;

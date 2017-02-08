@@ -55,7 +55,6 @@ public class Map {
                 w = Bukkit.getWorld(config.getConfigurationSection("Maps." + name).getString("WorldFileName"));
 
                 loc = new Location(w, x, y, z, pitch, yaw);
-                System.out.println(loc);
                 spawns[count] = loc;
 
                 count++;
@@ -95,7 +94,7 @@ public class Map {
         for (UUID id : g.players) {
             Player p = Bukkit.getPlayer(id);
             if (Teams.getTeam(id) != null) {
-                Location l = getSpawn(map,Teams.teamsAr.indexOf(Teams.getTeam(id)));
+                Location l = this.getSpawn(map,Teams.teamsAr.indexOf(Teams.getTeam(id)));
                 l.setWorld(Bukkit.getWorld(g.map.getWorldFileName() + g.gameName));
                 p.teleport(l);
             }

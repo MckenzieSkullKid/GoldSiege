@@ -14,9 +14,6 @@ import java.util.Arrays;
 public class FileHandler {
 
     public static void copyWorld(World originalWorld, String newWorldName) {
-        System.out.println(Bukkit.getWorlds());
-        //System.out.println(originalWorld.getWorldFolder());
-        System.out.println(newWorldName);
         copyFileStructure(originalWorld.getWorldFolder(), new File(Bukkit.getWorldContainer(), newWorldName));
         new WorldCreator(newWorldName).createWorld();
     }

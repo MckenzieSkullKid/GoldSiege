@@ -49,7 +49,6 @@ public class GameManager {
                 gamesSize += 1;
             }
         }
-        System.out.println(gamesSize);
         if (gamesSize < AmountGames) {
             int remainderGames = AmountGames - gamesSize;
             int minValue = 0;
@@ -106,7 +105,6 @@ public class GameManager {
         Game g = getGame(getPlayersGame(id));
         if(g != null) {
             for (int i = 0; i <= g.players.size() - 1; i++) {
-                System.out.println(g.players.get(i) + " vs " + id);
                 if (g.players.get(i) == id) {
                     g.players.remove(i);
                     break;
@@ -131,7 +129,9 @@ public class GameManager {
 
     public static void startGame(String gameName) {
         new Countdown(GameManager.getGame(gameName), 30, 30, 20, 10, 5, 4, 3, 2, 1)
-                .runTaskTimer(Main.instance, 0, 20);
+                .runTaskTimer(Main.getInstance(), 0, 20);
+        Game g = getGame(gameName);
+        g.gameState = GameState.INGAME;
     }
 
     public static boolean checkGameWon(String gameName) {

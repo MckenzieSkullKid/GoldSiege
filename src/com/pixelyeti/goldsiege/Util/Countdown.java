@@ -4,10 +4,13 @@ import com.connorlinfoot.titleapi.TitleAPI;
 import com.pixelyeti.goldsiege.GameMechs.Game;
 import com.pixelyeti.goldsiege.GameMechs.Map;
 import com.pixelyeti.goldsiege.GameMechs.MapManager;
+import com.pixelyeti.goldsiege.GameMechs.StartingItems;
 import com.pixelyeti.goldsiege.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -42,7 +45,8 @@ public class Countdown extends BukkitRunnable {
         for (UUID id : g.players) {
             Player p = Bukkit.getPlayer(id);
             p.setLevel(i);
-            p.sendMessage(StringUtilities.prefix + ChatColor.GREEN + "Time remaining " + i);
+            if (i != 0)
+                p.sendMessage(StringUtilities.prefix + ChatColor.GREEN + "Time remaining " + i);
         }
 
         if (i == startTime) {
@@ -53,19 +57,23 @@ public class Countdown extends BukkitRunnable {
                 m = g.map;
             }
             FileHandler.copyWorld(Bukkit.getWorld(g.map.getWorldFileName()), g.map.getWorldFileName() + g.gameName);
-            for(UUID id : g.players) {
+            for (UUID id : g.players) {
                 Player p = Bukkit.getPlayer(id);
                 p.sendMessage(StringUtilities.prefix + ChatColor.AQUA + "The chosen map is: " + ChatColor.GOLD +
                         m.getName());
+            }
+        } else if (i == 10) {
+            Map m = g.map;
+            m.teleportToSpawns(m.getName(), g);
+            for (UUID id : g.players) {
+                StartingItems.get(id);
+                Bukkit.getPlayer(id).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 200, 10));
             }
         } else if (i == 0) {
             for (UUID id : g.players) {
                 Player p = Bukkit.getPlayer(id);
                 TitleAPI.sendTitle(p, 5, 5, 10, ChatColor.GOLD + "Game Started!", null);
-                Map m = new Map();
-                m.teleportToSpawns(m.getName(), g);
             }
-
             cancel();
             return;
         }

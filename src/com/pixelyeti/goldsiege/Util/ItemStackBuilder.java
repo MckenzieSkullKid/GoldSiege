@@ -26,8 +26,8 @@ public class ItemStackBuilder {
         return i;
     }
 
-    public static ItemStack createCustomItemStack(Material m, String name, ChatColor colour,  int size) {
-        return createCustomItemStack(m, name, colour, size, 0);
+    public static ItemStack createCustomItemStack(Material m, String name, ChatColor colour,  int size, String... lore) {
+        return createCustomItemStack(m, name, colour, size, 0, lore);
     }
 
     public static ItemStack createShopItem(Material m, String name, ChatColor colour, String price, String description) {

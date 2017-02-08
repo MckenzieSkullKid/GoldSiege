@@ -17,6 +17,7 @@ public class EventsManager {
         pm.registerEvents(new PlayerInteract(), Main.getInstance());
         pm.registerEvents(new PlayerLeave(), Main.getInstance());
         pm.registerEvents(new WeatherChange(), Main.getInstance());
+        pm.registerEvents(new PlayerRespawn(), Main.getInstance());
 
     }
 }

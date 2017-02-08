@@ -23,6 +23,7 @@ public class StartingItems {
 
         bow.addEnchantment(Enchantment.ARROW_DAMAGE, 1);
 
+        p.getInventory().clear();
         p.getInventory().setItem(0, goldSword);
         p.getInventory().setItem(1, bow);
         p.getInventory().setChestplate(goldChest);

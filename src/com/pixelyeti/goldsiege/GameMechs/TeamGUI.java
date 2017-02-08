@@ -40,9 +40,6 @@ public class TeamGUI {
 
         for(int i = 0; i <= (teams.size() - 1); i++) {
             if (!(teams.get(i).getName().equalsIgnoreCase("Spectate"))) {
-                System.out.println(teams.get(i).getName());
-                System.out.println(ItemStackBuilder.createCustomItemStack(Material.BANNER, "Team " + teams.get(i).getName()
-                        , ChatColor.GOLD, teams.get(i).getSize() + 1, 15 - i));
                 teamGUI.setItem(i, ItemStackBuilder.createCustomItemStack(Material.BANNER, "Team " + teams.get(i).getName()
                         , ChatColor.GOLD, 1, 15 - i, teams.get(i).getSize() + "/" +
                                 Main.getInstance().getConfig().get("Game.MaxPlayers") + " Players", "Click to Join!"));

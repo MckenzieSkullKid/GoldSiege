@@ -87,9 +87,8 @@ public class Teams {
     }
 
     public static void applyRandPrefix() {
-        Random rand = new Random();
         for (Team t : teamsAr) {
-            t.setPrefix(ChatColor.translateAlternateColorCodes('$', "$" + RandomValue.randomChar(0, 16)));
+            t.setPrefix("§" + RandomValue.randomChar(0, 16));
         }
     }
 

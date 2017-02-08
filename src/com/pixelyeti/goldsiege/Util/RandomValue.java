@@ -12,7 +12,7 @@ public class RandomValue {
         int randomNum = rand.nextInt((max-min) + 1) + min;
 
         if (randomNum >= 0 && randomNum <= 9) {
-            return (char) randomNum;
+            return (char)('0' + randomNum);
         }
         switch (randomNum) {
             case 10:

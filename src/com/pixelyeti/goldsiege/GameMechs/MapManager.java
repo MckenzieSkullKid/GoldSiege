@@ -15,8 +15,6 @@ import java.util.Random;
 public class MapManager {
 
     public static ArrayList<Map> maps = new ArrayList<>();
-    private static int count = 0;
-    private Map m = new Map();
 
     public static final void initiateMaps() {
         FileConfiguration config = Main.getInstance().getConfig();
@@ -29,10 +27,9 @@ public class MapManager {
             m.setTeamAmount(config.getInt("Maps." + s + ".NumTeams"));
             m.setWorldFileName(config.getString("Maps." + s + ".WorldFileName"));
             m.setSaving(config.getBoolean("Maps." + s + ".Saving"));
-            m.loadSpawns(m.getWorldFileName());
+            m.spawns = m.loadSpawns(m.getWorldFileName());
 
             maps.add(m);
-            count++;
 
             Bukkit.createWorld(new WorldCreator(m.getWorldFileName()));
         }
@@ -42,8 +39,7 @@ public class MapManager {
         Map map = null;
         Random rand = new Random();
 
-        int randNum = rand.nextInt(((maps.size() - 1)) +1);
-        System.out.println(randNum);
+        int randNum = rand.nextInt(((maps.size() - 1)) + 1);
         map = maps.get(randNum);
 
         return map;
