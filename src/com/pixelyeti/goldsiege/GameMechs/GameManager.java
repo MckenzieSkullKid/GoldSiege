@@ -4,6 +4,7 @@ import com.connorlinfoot.titleapi.TitleAPI;
 import com.pixelyeti.goldsiege.Main;
 import com.pixelyeti.goldsiege.Util.Countdown;
 import com.pixelyeti.goldsiege.Util.ItemStackBuilder;
+import com.pixelyeti.goldsiege.Util.ServerUtils;
 import com.pixelyeti.goldsiege.Util.StringUtilities;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
@@ -127,18 +128,25 @@ public class GameManager {
         return null;
     }
 
+    public static void startGameCountdownTimer(String gameName) {
+
+    }
+
     public static void startGame(String gameName) {
-        new Countdown(GameManager.getGame(gameName), 30, 30, 20, 10, 5, 4, 3, 2, 1)
+        new Countdown(GameManager.getGame(gameName), Main.getInstance().getConfig().getInt("Game.WaitTimeMin"),
+                Main.getInstance().getConfig().getInt("Game.TeleportTime"),30, 20, 10, 5, 4, 3, 2, 1)
                 .runTaskTimer(Main.getInstance(), 0, 20);
         Game g = getGame(gameName);
         g.gameState = GameState.INGAME;
     }
 
+
+    // TODO: Check game won conditions
     public static boolean checkGameWon(String gameName) {
         Game ga = null;
         for (Game g : getGames()) {
             if (g.gameName.equalsIgnoreCase(gameName)) {
-                g = ga;
+                ga = g;
             }
         }
 
@@ -162,10 +170,11 @@ public class GameManager {
                 ga = g;
             }
         }
+        if (ga.winningTeam == null)
+            return;
         for (UUID id : ga.players) {
             Player pl = Bukkit.getPlayer(id);
-            String status = "";
-            status = Teams.getTeam(id) == ga.winningTeam ? "Winner" : "Loser";
+            String status = (Teams.getTeam(id) == ga.winningTeam) ? "Winner" : "Loser";
             TitleAPI.sendTitle(pl, 5, 30, 5, ChatColor.GREEN + status + "!", ChatColor.AQUA + "Team " +
                     ChatColor.GREEN + ga.winningTeam.getName() + ChatColor.AQUA + " Won!");
             pl.setGameMode(GameMode.SPECTATOR);
@@ -175,5 +184,12 @@ public class GameManager {
 
             p.getLocation().getWorld().spawnEntity(p.getLocation(), EntityType.FIREWORK);
         }
+        Game finalGa = ga;
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> {
+            for (UUID id : finalGa.players) {
+                GameManager.removeFromGame(id);
+                Bukkit.getPlayer(id).teleport(ServerUtils.getServerSpawn());
+            }
+        }, 400L);
     }
 }

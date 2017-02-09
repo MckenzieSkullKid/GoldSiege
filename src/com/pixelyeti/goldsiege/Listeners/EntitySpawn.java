@@ -3,6 +3,7 @@ package com.pixelyeti.goldsiege.Listeners;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 
 /**
@@ -11,13 +12,9 @@ import org.bukkit.event.entity.EntitySpawnEvent;
 public class EntitySpawn implements Listener {
 
     @EventHandler
-    public void onEntitySpawn(EntitySpawnEvent e) {
-        if (e.getLocation().getWorld().getName().equalsIgnoreCase("world")) {
-            if (e.getEntityType() == EntityType.SKELETON || e.getEntityType() == EntityType.ZOMBIE
-                    || e.getEntityType() == EntityType.CREEPER || e.getEntityType() == EntityType.WITCH
-                    || e.getEntityType() == EntityType.SPIDER) {
-                e.setCancelled(true);
-            }
+    public void onEntitySpawn(CreatureSpawnEvent e) {
+        if (e.getEntityType() != EntityType.PIG_ZOMBIE) {
+            e.setCancelled(true);
         }
     }
 }

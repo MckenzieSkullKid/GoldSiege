@@ -25,7 +25,6 @@ public class GameGUI {
         gameGUI = Bukkit.createInventory(null, (numSlots + 1) * 9, "Games!");
 
         for (int i = 0; i <= (GameManager.getGames().length - 1); i++) {
-            System.out.println(GameManager.getGames()[i].gameName);
             int metavalue;
             String gameState;
             switch (GameManager.getGames()[i].gameState) {
@@ -46,8 +45,12 @@ public class GameGUI {
                     gameState = ChatColor.RED + "ERROR!";
                     break;
             }
+            String mapName = "";
+            if (GameManager.getGames()[i].map != null) {
+                mapName = GameManager.getGames()[i].map.getName();
+            }
             gameGUI.setItem(i, ItemStackBuilder.createCustomItemStack(Material.STAINED_CLAY, "Game " + GameManager.getGames()[i].gameName
-                    , ChatColor.GOLD, 1, metavalue, gameState));
+                    , ChatColor.GOLD, 1, metavalue, gameState, (mapName.equalsIgnoreCase("") ? "~~" : ChatColor.BLUE + "Map: " + mapName)));
         }
     }
 

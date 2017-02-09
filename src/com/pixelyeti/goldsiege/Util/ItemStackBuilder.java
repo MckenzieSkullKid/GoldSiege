@@ -19,6 +19,8 @@ public class ItemStackBuilder {
         im.setDisplayName(colour + name);
         List<String> text = new ArrayList<>();
         for (String s : lore) {
+            if (s.equalsIgnoreCase("~~"))
+                continue;
             text.add(ChatColor.DARK_PURPLE.toString() + ChatColor.ITALIC + s);
         }
         im.setLore(text);

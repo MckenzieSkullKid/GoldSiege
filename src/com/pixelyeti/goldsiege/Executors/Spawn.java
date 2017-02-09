@@ -1,6 +1,7 @@
 package com.pixelyeti.goldsiege.Executors;
 
 import com.pixelyeti.goldsiege.Main;
+import com.pixelyeti.goldsiege.Util.ServerUtils;
 import com.pixelyeti.goldsiege.Util.StringUtilities;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -34,7 +35,7 @@ public class Spawn implements CommandExecutor {
 
         ConfigurationSection serverSection = Main.getInstance().getConfig().getConfigurationSection("Server");
         if (!serverSection.contains("Spawn")) {
-            p.teleport(p.getLocation().getWorld().getSpawnLocation());
+            p.teleport(ServerUtils.getServerSpawn());
             p.sendMessage(StringUtilities.prefix + ChatColor.GREEN + "Teleported to spawn!");
         }
 

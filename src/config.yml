@@ -10,6 +10,7 @@ Game:
   Prefix: gs
   MaxPlayers: 16
   WaitTimeMin: 120
+  TeleportTime: 10
   ChooseMapBefore: false
 #                            #
 # Example map included below #

@@ -42,7 +42,7 @@ public class TeamGUI {
             if (!(teams.get(i).getName().equalsIgnoreCase("Spectate"))) {
                 teamGUI.setItem(i, ItemStackBuilder.createCustomItemStack(Material.BANNER, "Team " + teams.get(i).getName()
                         , ChatColor.GOLD, 1, 15 - i, teams.get(i).getSize() + "/" +
-                                Main.getInstance().getConfig().get("Game.MaxPlayers") + " Players", "Click to Join!"));
+                                Main.getInstance().getConfig().getInt("Game.MaxPlayers")/2 + " Players", "Click to Join!"));
             }
         }
         int midBottomSlot = teamGUI.getSize() - 5;

@@ -24,14 +24,12 @@ public class StartGame implements CommandExecutor {
             p.sendMessage(StringUtilities.noPermission);
             return false;
         }
-        if(args.length != 0) {
+        if (args.length != 0) {
             p.sendMessage(StringUtilities.invalidArguments);
             return false;
         }
         String gameName = GameManager.getPlayersGame(p.getUniqueId());
         GameManager.startGame(gameName);
-        //new Countdown(GameManager.getGame(gameName), 10, 30, 20, 10, 5, 4, 3, 2, 1)
-        //        .runTaskTimer(Main.getInstance(), 0, 20);
         return false;
     }
 }

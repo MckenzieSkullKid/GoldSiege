@@ -14,9 +14,6 @@ import org.bukkit.entity.Player;
  * Created by Callum on 09/01/2016.
  */
 public class SetSpawn implements CommandExecutor {
-    public SetSpawn(Main plugin) {
-    }
-
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
         if (!(commandSender instanceof Player)) {
@@ -28,7 +25,7 @@ public class SetSpawn implements CommandExecutor {
             p.sendMessage(StringUtilities.noPermission);
             return false;
         }
-        if(args.length >= 0) {
+        if (args.length >= 0) {
             p.sendMessage(StringUtilities.invalidArguments);
             return false;
         }

@@ -29,11 +29,12 @@ public class Countdown extends BukkitRunnable {
 
     private Map m;
 
-    public Countdown(Game g, int start, int... cNums) {
+    public Countdown(Game g, int start, int tpTime, int... cNums) {
         this.g = g;
         this.i = start;
         this.startTime = start;
-        this.countingNums = new ArrayList<Integer>();
+        this.tpTime = tpTime;
+        this.countingNums = new ArrayList<>();
 
         for (int c : cNums) {
             countingNums.add(c);
@@ -45,8 +46,6 @@ public class Countdown extends BukkitRunnable {
         for (UUID id : g.players) {
             Player p = Bukkit.getPlayer(id);
             p.setLevel(i);
-            if (i != 0)
-                p.sendMessage(StringUtilities.prefix + ChatColor.GREEN + "Time remaining " + i);
         }
 
         if (i == startTime) {
@@ -62,17 +61,19 @@ public class Countdown extends BukkitRunnable {
                 p.sendMessage(StringUtilities.prefix + ChatColor.AQUA + "The chosen map is: " + ChatColor.GOLD +
                         m.getName());
             }
-        } else if (i == 10) {
+        } else if (i == tpTime) {
             Map m = g.map;
             m.teleportToSpawns(m.getName(), g);
             for (UUID id : g.players) {
                 StartingItems.get(id);
                 Bukkit.getPlayer(id).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 200, 10));
+                Bukkit.getPlayer(id).sendMessage(StringUtilities.prefix + ChatColor.GREEN + "Time remaining " + i);
             }
         } else if (i == 0) {
             for (UUID id : g.players) {
                 Player p = Bukkit.getPlayer(id);
-                TitleAPI.sendTitle(p, 5, 5, 10, ChatColor.GOLD + "Game Started!", null);
+                TitleAPI.sendTitle(p, 5, 10, 5, ChatColor.GOLD + "Go!",
+                        ChatColor.AQUA + "Kill all of the pigmen!");
             }
             cancel();
             return;
@@ -81,10 +82,11 @@ public class Countdown extends BukkitRunnable {
         if (countingNums.contains(i)) {
             for (UUID id : g.players) {
                 Player p = Bukkit.getPlayer(id);
-                if (i >= 3) {
-                    TitleAPI.sendTitle(p, 5, 5, 10, ChatColor.GREEN + "" + i, null);
+                p.sendMessage(StringUtilities.prefix + ChatColor.GREEN + "Time remaining " + i);
+                if (i > 3) {
+                    TitleAPI.sendTitle(p, 5, 10, 5, ChatColor.GREEN + "" + i, null);
                 } else {
-                    TitleAPI.sendTitle(p, 5, 5, 10, ChatColor.RED + "" + i, null);
+                    TitleAPI.sendTitle(p, 5, 10, 5, ChatColor.RED + "" + i, null);
                 }
             }
         }

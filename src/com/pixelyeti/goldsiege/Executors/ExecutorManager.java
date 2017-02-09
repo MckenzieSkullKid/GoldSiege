@@ -18,5 +18,6 @@ public class ExecutorManager {
         m.getCommand("startgame").setExecutor(new StartGame());
         m.getCommand("addmapspawn").setExecutor(new AddMapSpawn());
         m.getCommand("listspawns").setExecutor(new ListAllMapSpawns());
+        m.getCommand("endgame").setExecutor(new EndGame());
     }
 }
