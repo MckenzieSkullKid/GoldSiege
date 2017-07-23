@@ -6,13 +6,11 @@ import com.pixelyeti.goldsiege.Util.StringUtilities;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -31,7 +29,7 @@ public class Teams {
         g.obj = board.registerNewObjective("Gold Blocks", "dummy");
 
         for (Team t : g.teams) {
-            t.getPlayers().forEach(t::removePlayer);
+            t.getEntries().forEach(t::removeEntry);
         }
         g.teams.clear();
 
@@ -45,13 +43,10 @@ public class Teams {
     }
 
     public static Team getTeam(UUID uuid) {
-        for (Game g : GameManager.getGames()) {
-            for (Team t : g.teams) {
-                if (t.getPlayers().contains(Bukkit.getPlayer(uuid))) {
+        for (Game g : GameManager.getGames())
+            for (Team t : g.teams)
+                if (t.getEntries().contains(Bukkit.getPlayer(uuid).getName()))
                     return t;
-                }
-            }
-        }
         return null;
     }
 
@@ -62,16 +57,14 @@ public class Teams {
     public static void addPlayer(UUID uuid, String team, String gameName) {
         Player p = Bukkit.getPlayer(uuid);
         boolean wasAdded = false;
-        for (Game ga : GameManager.getGames()) {
-            if (ga.gameName.equalsIgnoreCase(gameName)) {
-                for (Team t : ga.teams) {
+        for (Game ga : GameManager.getGames())
+            if (ga.gameName.equalsIgnoreCase(gameName))
+                for (Team t : ga.teams)
                     if (team.equalsIgnoreCase(t.getName())) {
-                        t.addPlayer(Bukkit.getOfflinePlayer(uuid));
+                        t.addEntry(Bukkit.getPlayer(uuid).getName());
+                        Bukkit.getPlayer(uuid).setDisplayName(t.getPrefix() + Bukkit.getPlayer(uuid).getName() + ChatColor.RESET);
                         wasAdded = true;
                     }
-                }
-            }
-        }
         if (!wasAdded) {
             p.sendMessage(StringUtilities.prefix + ChatColor.RED + "That team does not exist!");
         }
@@ -80,39 +73,37 @@ public class Teams {
     public static void removePlayer(UUID uuid, String gameName) {
         Player p = Bukkit.getPlayer(uuid);
         for (Team t : teamsAr) {
-            if (t.getPlayers().contains(p)) {
-                t.removePlayer(p);
+            if (t.getEntries().contains(p.getName())) {
+                t.removeEntry(p.getName());
+                break;
             }
         }
     }
 
     public static void applyRandPrefix() {
-        for (Team t : teamsAr) {
-            t.setPrefix("§" + RandomValue.randomChar(0, 16));
-        }
+        for (Team t : teamsAr)
+            t.setPrefix(ChatColor.translateAlternateColorCodes('$',
+                    "$" + RandomValue.randomChar(0, 15)));
     }
 
     public static void sendPlayers(Team t, Location l) {
-        for (OfflinePlayer pl : teamsAr.get(teamsAr.indexOf(t)).getPlayers()) {
-            Player p = (Player) pl;
+        for (String s : teamsAr.get(teamsAr.indexOf(t)).getEntries()) {
+            Player p = Bukkit.getPlayer(s);
             p.teleport(l);
         }
     }
 
     public static int getTeamSize(String t) {
-        for (Team ts : teamsAr) {
-            if (t.equalsIgnoreCase(ts.getName())) {
+        for (Team ts : teamsAr)
+            if (t.equalsIgnoreCase(ts.getName()))
                 return ts.getSize();
-            }
-        }
         return 0;
     }
 
     public static int getMaxPlayers() {
         int max = 0;
-        for (Team t : teamsAr) {
+        for (Team t : teamsAr)
             max += t.getSize();
-        }
         return max;
     }
 

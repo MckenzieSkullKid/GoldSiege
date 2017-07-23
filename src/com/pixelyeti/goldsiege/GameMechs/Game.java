@@ -1,5 +1,6 @@
 package com.pixelyeti.goldsiege.GameMechs;
 
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
@@ -21,6 +22,7 @@ public class Game {
     public Scoreboard board;
     public Objective obj;
     public Team winningTeam;
+    public int countdownTime = -1;
 
     public Game(int minPlayers, String gameName, GameState gameState, ArrayList<Team> teams) {
         this.minPlayers = minPlayers;

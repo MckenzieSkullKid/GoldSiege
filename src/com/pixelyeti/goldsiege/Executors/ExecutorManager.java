@@ -12,7 +12,7 @@ public class ExecutorManager {
     public static void registerExecutors(Main m) {
         //setSpawn = new SetSpawn(Main.instance);
         //Main.instance.getCommand("setspawn").setExecutor(setSpawn);
-        m.getCommand("setspawn").setExecutor(new SetSpawn(m));
+        m.getCommand("setspawn").setExecutor(new SetSpawn());
         m.getCommand("spawn").setExecutor(new Spawn(m));
         m.getCommand("tpworld").setExecutor(new TPWorld());
         m.getCommand("startgame").setExecutor(new StartGame());

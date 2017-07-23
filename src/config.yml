@@ -2,8 +2,8 @@
 Game:
   TeamAmount: 2
   Teams:
-  - Red
-  - Blue
+  - Alpha
+  - Bravo
   Spectate: true
   AmountGames: 11
   MinPlayers: 4

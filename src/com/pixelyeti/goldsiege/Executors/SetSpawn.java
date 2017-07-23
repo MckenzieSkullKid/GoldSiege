@@ -25,10 +25,13 @@ public class SetSpawn implements CommandExecutor {
             p.sendMessage(StringUtilities.noPermission);
             return false;
         }
-        if (args.length >= 0) {
+        if (args.length > 0) {
             p.sendMessage(StringUtilities.invalidArguments);
             return false;
         }
+
+        if (Main.getInstance().getConfig().getConfigurationSection("Server") == null)
+            Main.getInstance().getConfig().createSection("Server");
 
         ConfigurationSection serverSection = Main.getInstance().getConfig().getConfigurationSection("Server");
 
@@ -43,6 +46,6 @@ public class SetSpawn implements CommandExecutor {
 
         p.sendMessage(StringUtilities.prefix + ChatColor.GREEN + "The Server spawn has been set!");
 
-        return false;
+        return true;
     }
 }

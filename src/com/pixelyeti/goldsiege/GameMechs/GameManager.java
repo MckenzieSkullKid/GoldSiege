@@ -1,6 +1,5 @@
 package com.pixelyeti.goldsiege.GameMechs;
 
-import com.connorlinfoot.titleapi.TitleAPI;
 import com.pixelyeti.goldsiege.Main;
 import com.pixelyeti.goldsiege.Util.Countdown;
 import com.pixelyeti.goldsiege.Util.ItemStackBuilder;
@@ -75,28 +74,23 @@ public class GameManager {
         Player p = Bukkit.getPlayer(id);
         for (Game g : getGames()) {
             if (g.gameName.equalsIgnoreCase(gameName)) {
-                if (g.players != null) {
-                    for (UUID uuid : g.players) {
-                        if (uuid != null) {
+                if (g.players != null)
+                    for (UUID uuid : g.players)
+                        if (uuid != null)
                             gameSize += 1;
-                        }
-                    }
-                }
                 if (gameSize < 16) {
                     g.players.add(id);
                     p.getInventory().remove(ItemStackBuilder.createCustomItemStack(Material.NETHER_STAR, "Game Selector",
                             ChatColor.AQUA, 1));
                     p.getInventory().addItem(ItemStackBuilder.createCustomItemStack(Material.END_CRYSTAL, "Team Selector",
                             ChatColor.LIGHT_PURPLE, 1));
-                } else {
+                } else
                     p.sendMessage(StringUtilities.prefix + ChatColor.RED + " This game is full!");
-                }
 
-                if (gameSize >= g.minPlayers && gameSize != 16) {
+                if (gameSize >= g.minPlayers && gameSize != 16 && g.countdownTime == -1)
                     new Countdown(g, 120, 30, 20, 10, 5, 4, 3, 2, 1).runTaskTimer(Main.instance, 0, 1000);
-                } else if (gameSize == 16) {
+                else if (gameSize == 16 && g.countdownTime >= 30)
                     new Countdown(g, 30, 30, 20, 10, 5, 4, 3, 2, 1).runTaskTimer(Main.instance, 0, 1000);
-                }
             }
         }
     }
@@ -175,12 +169,12 @@ public class GameManager {
         for (UUID id : ga.players) {
             Player pl = Bukkit.getPlayer(id);
             String status = (Teams.getTeam(id) == ga.winningTeam) ? "Winner" : "Loser";
-            TitleAPI.sendTitle(pl, 5, 30, 5, ChatColor.GREEN + status + "!", ChatColor.AQUA + "Team " +
-                    ChatColor.GREEN + ga.winningTeam.getName() + ChatColor.AQUA + " Won!");
+            pl.sendTitle(ChatColor.GREEN + status + "!", ChatColor.AQUA + "Team " +
+                    ChatColor.GREEN + ga.winningTeam.getName() + ChatColor.AQUA + " Won!", 5, 30, 5);
             pl.setGameMode(GameMode.SPECTATOR);
         }
-        for(OfflinePlayer op : ga.winningTeam.getPlayers()) {
-            Player p = Bukkit.getPlayer(op.getName());
+        for(String s : ga.winningTeam.getEntries()) {
+            Player p = Bukkit.getPlayer(s);
 
             p.getLocation().getWorld().spawnEntity(p.getLocation(), EntityType.FIREWORK);
         }

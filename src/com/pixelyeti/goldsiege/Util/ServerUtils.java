@@ -12,12 +12,12 @@ public class ServerUtils {
 
     public static Location getServerSpawn() {
         ConfigurationSection serverSection = Main.getInstance().getConfig().getConfigurationSection("Server");
-        Location l = null;
-        l.setX((Double) serverSection.get("Spawn.X"));
-        l.setY((Double) serverSection.get("Spawn.Y"));
-        l.setZ((Double) serverSection.get("Spawn.Z"));
-        l.setYaw((float) serverSection.get("Spawn.Yaw"));
-        l.setPitch((float) serverSection.get("Spawn.Pitch"));
+        Location l = new Location(null, 0d, 0d,0d, 0f, 0f);
+        l.setX((double) serverSection.get("Spawn.X"));
+        l.setY((double) serverSection.get("Spawn.Y"));
+        l.setZ((double) serverSection.get("Spawn.Z"));
+        l.setYaw((float) serverSection.getDouble("Spawn.Yaw"));
+        l.setPitch((float) serverSection.getDouble("Spawn.Pitch"));
         l.setWorld(Bukkit.getWorld(serverSection.getString("Spawn.World")));
 
         return l;

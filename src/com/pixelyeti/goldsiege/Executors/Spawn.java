@@ -3,6 +3,8 @@ package com.pixelyeti.goldsiege.Executors;
 import com.pixelyeti.goldsiege.Main;
 import com.pixelyeti.goldsiege.Util.ServerUtils;
 import com.pixelyeti.goldsiege.Util.StringUtilities;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -28,15 +30,18 @@ public class Spawn implements CommandExecutor {
             p.sendMessage(StringUtilities.noPermission);
             return false;
         }
-        if(args.length >= 0) {
+        if(args.length > 0) {
             p.sendMessage(StringUtilities.invalidArguments);
             return false;
         }
 
         ConfigurationSection serverSection = Main.getInstance().getConfig().getConfigurationSection("Server");
-        if (!serverSection.contains("Spawn")) {
+        if (!serverSection.contains("Spawn") || serverSection != null) {
             p.teleport(ServerUtils.getServerSpawn());
+            p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("Teleported to spawn"));
             p.sendMessage(StringUtilities.prefix + ChatColor.GREEN + "Teleported to spawn!");
+        } else {
+            p.sendMessage(StringUtilities.errorMessage);
         }
 
         return false;

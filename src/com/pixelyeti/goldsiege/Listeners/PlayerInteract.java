@@ -13,15 +13,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import java.util.HashSet;
+import java.util.Set;
 
 public class PlayerInteract implements Listener {
 
     @EventHandler
-    @SuppressWarnings("deprecation")
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        if (event.getPlayer().getItemInHand().getType() == Material.WATCH) {
+        if (event.getPlayer().getInventory().getItemInMainHand().getType() == Material.WATCH) {
             if (event.getAction() == Action.RIGHT_CLICK_AIR
                     || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 if (player.getPlayerTime() == player.getWorld().getFullTime()) {
@@ -40,23 +39,23 @@ public class PlayerInteract implements Listener {
                             + "Players are now visible");
                 }
             }
-        } else if (player.getItemInHand().getType() == Material.NETHER_STAR) {
+        } else if (player.getInventory().getItemInMainHand().getType() == Material.NETHER_STAR) {
             if (event.getAction() == Action.RIGHT_CLICK_AIR
                     || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 GameGUI.openInventory(player.getUniqueId());
             }
-        } else if (player.getItemInHand().getType() == Material.END_CRYSTAL) {
+        } else if (player.getInventory().getItemInMainHand().getType() == Material.END_CRYSTAL) {
             if (event.getAction() == Action.RIGHT_CLICK_AIR
                     || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 TeamGUI.setItems(GameManager.getPlayersGame(player.getUniqueId()));
                 TeamGUI.openInventory(player.getUniqueId());
             }
-        } else if (player.getItemInHand().getType() == Material.CARROT_STICK) {
+        } else if (player.getInventory().getItemInMainHand().getType() == Material.CARROT_STICK) {
             if (event.getAction() == Action.RIGHT_CLICK_AIR
                     || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                player.getWorld().strikeLightning(player.getTargetBlock((HashSet<Byte>)null, 100).getLocation());
+                player.getWorld().strikeLightning(player.getTargetBlock((Set<Material>)null, 100).getLocation());
             }
-        } else if (player.getItemInHand().getType() == Material.GOLD_SPADE) {
+        } else if (player.getInventory().getItemInMainHand().getType() == Material.GOLD_SPADE) {
             if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
                 event.setCancelled(true);
 

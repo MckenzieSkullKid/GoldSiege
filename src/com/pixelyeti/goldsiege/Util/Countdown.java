@@ -1,6 +1,5 @@
 package com.pixelyeti.goldsiege.Util;
 
-import com.connorlinfoot.titleapi.TitleAPI;
 import com.pixelyeti.goldsiege.GameMechs.Game;
 import com.pixelyeti.goldsiege.GameMechs.Map;
 import com.pixelyeti.goldsiege.GameMechs.MapManager;
@@ -43,6 +42,7 @@ public class Countdown extends BukkitRunnable {
 
     @Override
     public void run() {
+        g.countdownTime = i;
         for (UUID id : g.players) {
             Player p = Bukkit.getPlayer(id);
             p.setLevel(i);
@@ -72,8 +72,7 @@ public class Countdown extends BukkitRunnable {
         } else if (i == 0) {
             for (UUID id : g.players) {
                 Player p = Bukkit.getPlayer(id);
-                TitleAPI.sendTitle(p, 5, 10, 5, ChatColor.GOLD + "Go!",
-                        ChatColor.AQUA + "Kill all of the pigmen!");
+                p.sendTitle(ChatColor.GOLD + "Go!", ChatColor.AQUA + "Kill all of the pigmen!", 5, 10, 5);
             }
             cancel();
             return;
@@ -83,11 +82,11 @@ public class Countdown extends BukkitRunnable {
             for (UUID id : g.players) {
                 Player p = Bukkit.getPlayer(id);
                 p.sendMessage(StringUtilities.prefix + ChatColor.GREEN + "Time remaining " + i);
-                if (i > 3) {
-                    TitleAPI.sendTitle(p, 5, 10, 5, ChatColor.GREEN + "" + i, null);
-                } else {
-                    TitleAPI.sendTitle(p, 5, 10, 5, ChatColor.RED + "" + i, null);
-                }
+                ChatColor textColor = ChatColor.GREEN;
+                if (i >= 3)
+                    textColor = ChatColor.RED;
+                p.sendTitle(textColor + "" + i, null, 5, 10, 5);
+
             }
         }
         i--;
